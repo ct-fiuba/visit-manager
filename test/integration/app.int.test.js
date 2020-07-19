@@ -6,16 +6,24 @@ mongoose.connect(mongoURL);
 
 let server;
 
-let author = "testUser";
-let user_id = 1;
-let url = "some-url.com/test";
-let url2 = "some-url.com/test22";
-let thumb = "some-url.com/thumbs/test";
-let title = "TestVideo";
-let title2 = "THE MOST AWESOME TITLE";
-let description = "Some description text";
-let visibility = "public";
-let date = "09/19/18 14:55:26";
+let id1 = 1;
+let type1 = 'restaurant';
+let name1 = 'Mc Donalds';
+let email1 = 'mcdonalds@gmail.com';
+let address1 = 'Cabildo 1010';
+let city = 'CABA';
+let province = 'CABA';
+let zip = '1430ACV';
+let country = 'Argentina';
+let QRs1 = ['ASDF1234', 'QWER4563'];
+
+let id2 = 2;
+let type2 = 'supermarket';
+let name2 = 'Coto';
+let email2 = 'coto@gmail.com';
+let address2 = 'Cabildo 2020';
+let QRs2 = ['POU034F', 'ZXCV4567'];
+
 
 beforeAll(async () => {
   server = await app.listen(5005);
@@ -33,64 +41,68 @@ describe('App test', () => {
     });
   });
 
-  describe('videos', () => {
-    const correctVideo = {
-      author,
-      user_id,
-      url,
-      thumb,
-      title,
-      description,
-      visibility,
-      date
+  describe('establishments', () => {
+    const correctEstablishment1 = {
+      id1,
+      type1,
+      name1,
+      email1,
+      address1,
+      city,
+      province,
+      zip,
+      country,
+      QRs1
     };
-    const correctVideo2 = {
-      author,
-      user_id,
-      url: url2,
-      thumb,
-      title: title2,
-      description,
-      visibility: 'private',
-      date
+    const correctEstablishment2 = {
+      id2,
+      type2,
+      name2,
+      email2,
+      address2,
+      city,
+      province,
+      zip,
+      country,
+      QRs2
     };
 
-    describe('add correct video', () => {
+    describe('add correct establishments', () => {
       test('should return 201', async () => {
-        await request(server).post('/videos').send(correctVideo).expect('Content-Type', /json/).expect(201);
-        await request(server).post('/videos').send(correctVideo2).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment1).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment2).expect('Content-Type', /json/).expect(201);
       });
     });
 
-    describe('get videos', () => {
-      test('should return all videos', async () => {
-        await request(server).get('/videos').then(res => {
+    describe('get establishments', () => {
+      test('should return all establishments', async () => {
+        await request(server).get('/establishments').then(res => {
           expect(res.status).toBe(200);
           expect(res.body).toHaveLength(2);
         });
       });
     });
 
-    describe('get matching videos', () => {
-      describe('by visibility', () => {
-        test('when private, should return only private video', async () => {
-          await request(server).get('/videos?visibility=private').then(res => {
+    describe('get matching establishments', () => {
+      describe('by type', () => {
+        test('when restaurant, should return only restaurant establishment', async () => {
+          await request(server).get('/establishments?type=restaurant').then(res => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
         });
       });
 
-      describe('by title', () => {
-        test('when full match, should return that video', async () => {
-          await request(server).get('/videos?title=TestVideo').then(res => {
+      describe('by name', () => {
+        test('when full match, should return that establishment', async () => {
+          await request(server).get('/establishments?name=Coto').then(res => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
         });
 
-        test('when partial text match, should return all matching videos', async () => {
-          await request(server).get('/videos?textMatch=AweSOm').then(res => {
+        test('when partial text match, should return all matching establishments', async () => {
+          await request(server).get('/establishments?textMatch=Mc').then(res => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
