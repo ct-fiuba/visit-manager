@@ -2,15 +2,15 @@ const Establishment = require('../schemas/Establishment');
 
 module.exports = function EstablishmentHandler() {
   const findEstablishments = async (query) => {
-    return Establishment.find(query, '-_id -__v');
+    return Establishment.find(query);
   };
 
   const findEstablishment = async (establishmentId) => {
-    return Establishment.findOne({ id: establishmentId }, '-_id -__v');
+    return Establishment.findOne({ id: establishmentId });
   };
 
   const establishmentExists = async (content) => {
-    return Establishment.findOne({ url: content.url });
+    return Establishment.findOne({ id: content.id });
   };
 
   const addEstablishment = async (content) => {
@@ -28,7 +28,7 @@ module.exports = function EstablishmentHandler() {
   };
 
   return {
-    findEstablishment,
+    findEstablishments,
     findEstablishment,
     establishmentExists,
     addEstablishment,

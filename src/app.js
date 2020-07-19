@@ -4,6 +4,7 @@ const bodyParser = require('body-parser');
 const swaggerUi = require('swagger-ui-express');
 const swaggerDocument = require('./static/swagger.json');
 const establishmentsRouter = require('./routes/establishmentsRouter');
+const monitoringRouter = require('./routes/monitoringRouter');
 
 const config = {
   delta: parseInt(process.env.ENTRY_DELTA),
@@ -17,6 +18,7 @@ module.exports = function app() {
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(establishmentsRouter());
+  app.use(monitoringRouter());
   app.use('/swagger', swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 
   return app;

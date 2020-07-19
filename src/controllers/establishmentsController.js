@@ -6,11 +6,6 @@ module.exports = function establishmentsController(establishmentHandler) {
 
   const get = async (req, res, next) => {
     let filters = req.query;
-    if (filters.textMatch) {
-      titleMatch = filters.textMatch;
-      if (titleMatch.length > 2) filters.title = new RegExp(titleMatch, "i");
-      delete filters.textMatch;
-    }
     return establishmentHandler.findEstablishments(filters)
       .then(establishments => res.status(200).json(establishments))
       .catch(err => errorDB(res, err));

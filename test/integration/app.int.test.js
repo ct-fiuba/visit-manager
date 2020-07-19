@@ -24,7 +24,6 @@ let email2 = 'coto@gmail.com';
 let address2 = 'Cabildo 2020';
 let QRs2 = ['POU034F', 'ZXCV4567'];
 
-
 beforeAll(async () => {
   server = await app.listen(5005);
 });
@@ -43,33 +42,38 @@ describe('App test', () => {
 
   describe('establishments', () => {
     const correctEstablishment1 = {
-      id1,
-      type1,
-      name1,
-      email1,
-      address1,
+      id: id1,
+      type: type1,
+      name: name1,
+      email: email1,
+      address: address1,
       city,
       province,
       zip,
       country,
-      QRs1
+      QRs: QRs1
     };
     const correctEstablishment2 = {
-      id2,
-      type2,
-      name2,
-      email2,
-      address2,
+      id: id2,
+      type: type2,
+      name: name2,
+      email: email2,
+      address: address2,
       city,
       province,
       zip,
       country,
-      QRs2
+      QRs: QRs2
     };
 
-    describe('add correct establishments', () => {
+    describe('add first establishments', () => {
       test('should return 201', async () => {
         await request(server).post('/establishments').send(correctEstablishment1).expect('Content-Type', /json/).expect(201);
+      });
+    });
+
+    describe('add second establishments', () => {
+      test('should return 201', async () => {
         await request(server).post('/establishments').send(correctEstablishment2).expect('Content-Type', /json/).expect(201);
       });
     });
@@ -96,13 +100,6 @@ describe('App test', () => {
       describe('by name', () => {
         test('when full match, should return that establishment', async () => {
           await request(server).get('/establishments?name=Coto').then(res => {
-            expect(res.status).toBe(200);
-            expect(res.body).toHaveLength(1);
-          });
-        });
-
-        test('when partial text match, should return all matching establishments', async () => {
-          await request(server).get('/establishments?textMatch=Mc').then(res => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
