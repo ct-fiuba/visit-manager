@@ -5,12 +5,12 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
-    environment: 
+    environment:
       - PORT=5005
     ports:
       - "5005:5005"
     depends_on:
-      - mediaserver-db
-  
-  mediaserver-db:
+      - contact-tracing-db
+
+  contact-tracing-db:
     image: mongo:3.6.4

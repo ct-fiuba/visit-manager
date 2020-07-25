@@ -13,9 +13,9 @@ const main = () => {
   db.once('open', function() {
     console.log("Connected to MongoDB");
   });
-  
+
   app().listen(app_port, () => {
-    console.log(`Media server up in port ${app_port}!`);
+    console.log(`Visit Manager server up in port ${app_port}!`);
   });
 };
 
