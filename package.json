@@ -1,0 +1,44 @@
+{
+  "name": "js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "start": "node main.js",
+    "test": "jest unit",
+    "test:integration": "jest int"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.16.4",
+    "express-validator": "^6.3.0",
+    "body-parser": "^1.18.0",
+    "mongoose": "^5.9.10",
+    "mongoose-sequence": "^5.2.1",
+    "swagger-ui-express": "^4.1.4",
+    "dotenv": "^8.1.0",
+    "cors": "latest"
+  },
+  "devDependencies": {
+    "jest": "^26.0.1",
+    "mongodb-memory-server": "^6.6.1",
+    "prettier": "2.0.5",
+    "supertest": "^4.0.2"
+  },
+  "jest": {
+    "collectCoverage": true,
+    "coverageReporters": [
+      "lcov",
+      "text"
+    ]
+  },
+  "prettier": {
+    "arrowParens": "avoid",
+    "bracketSpacing": true,
+    "printWidth": 120,
+    "semi": true,
+    "singleQuote": true,
+    "trailingComma": "none"
+  }
+}

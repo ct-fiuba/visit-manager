@@ -1,2 +1,2 @@
-# tu2bo-media-srv
-TúTubo - Media Service
+# Contact Tracing - Visit Manager
+Gestión de establecimientos y responsable de gestionar las visitas de la población a establecimientos, manteniendo la privacidad de los usuarios.
