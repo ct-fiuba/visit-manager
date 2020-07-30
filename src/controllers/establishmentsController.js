@@ -26,9 +26,8 @@ module.exports = function establishmentsController(establishmentHandler) {
         if (establishment) {
           return res.status(409).json({ reason: 'Establishment already registered' });
         }
-
        return establishmentHandler.addEstablishment(req.body)
-          .then(establishment => res.status(201).json({ id: establishment.id }))
+          .then(establishment => res.status(201).json({ _id: establishment._id }))
           .catch(err => errorDB(res, err));
       })
       .catch(err => errorDB(res, err));

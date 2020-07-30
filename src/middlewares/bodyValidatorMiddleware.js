@@ -2,11 +2,11 @@ const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyValidatorMiddleware() {
   const addValidations = [
-    body(['type', 'name', 'email', 'address', 'city', 'province', 'zip', 'country', 'QRs'], 'Missing value').exists(),
+    body(['type', 'name', 'email', 'address', 'city', 'state', 'zip', 'country', 'QRs'], 'Missing value').exists(),
     body(['QRs']).not().isEmpty()
   ];
   const updateValidations = [
-    body(['id'], 'Invalid values').not().exists()
+    body(['_id'], 'Invalid values').not().exists()
   ];
 
   const validate = (req, res, next) => {
