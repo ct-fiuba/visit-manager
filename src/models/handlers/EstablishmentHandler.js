@@ -60,12 +60,24 @@ module.exports = function EstablishmentHandler() {
     return Establishment.deleteOne({ _id: establishmentId });
   };
 
+  const getPDFData = async (establishmentId) => {
+    let establishment = await Establishment.findOne({ _id: establishmentId });
+    let PDFInfo = [];
+    for (const qr_id of establishment.QRs) {
+      let current_qr = await QRHandler().findQR(qr_id);
+      PDFInfo.push([current_qr.name, qr_id.toString()]);
+    }
+    return PDFInfo;
+  };
+
+
   return {
     findEstablishments,
     findEstablishment,
     establishmentExists,
     addEstablishment,
     updateEstablishment,
-    deleteEstablishment
+    deleteEstablishment,
+    getPDFData
   };
 };

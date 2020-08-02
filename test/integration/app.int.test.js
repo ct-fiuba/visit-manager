@@ -82,15 +82,24 @@ describe('App test', () => {
       QRs: QRs2
     };
 
+    let establishment_id1;
+    let establishment_id2;
+
     describe('add first establishments', () => {
       test('should return 201', async () => {
-        await request(server).post('/establishments').send(correctEstablishment1).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment1).then(res => {
+          expect(res.status).toBe(201);
+          establishment_id1 = res.body._id;
+        });
       });
     });
 
     describe('add second establishments', () => {
       test('should return 201', async () => {
-        await request(server).post('/establishments').send(correctEstablishment2).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment2).then(res => {
+          expect(res.status).toBe(201);
+          establishment_id2 = res.body._id;
+        });
       });
     });
 
@@ -119,6 +128,16 @@ describe('App test', () => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
+        });
+      });
+    });
+
+    describe('get PDF file', () => {
+      test('should get a PDF document in the response', async () => {
+        await request(server).get(`/establishments/PDF/${establishment_id1}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.header['content-type']).toBe('application/pdf');
+          expect(res.header['content-disposition']).toContain('attachment');
         });
       });
     });

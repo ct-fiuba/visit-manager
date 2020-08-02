@@ -36,7 +36,8 @@ describe('PDF generator', () => {
   });
 
   test('should generate a PDF with the QR codes', async () => {
-    await PDFGenerator().generatePDFFromQRs(pathPDF, QRsInfo);
+    const buf = fs.createWriteStream(pathPDF);
+    await PDFGenerator().generatePDF(buf, QRsInfo);
     expect(fs.existsSync(pathPDF)).toBeTruthy();
     PDFGenerator().deleteFile(pathPDF);
     expect(fs.existsSync(pathPDF)).toBeFalsy();

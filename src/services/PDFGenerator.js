@@ -18,7 +18,7 @@ module.exports = function PDFGenerator() {
     fs.unlinkSync(filepath);
   }
 
-  const generatePDFFromQRs = async (filepath, QRsInfo) => {
+  const generatePDF = async (res, QRsInfo) => {
 
     if (!fs.existsSync(tmpQRDirectory)){
       fs.mkdirSync(tmpQRDirectory);
@@ -27,9 +27,7 @@ module.exports = function PDFGenerator() {
     // Create a document
     const doc = new PDFDocument({autoFirstPage:false});
 
-    // Pipe its output somewhere, like to a file or HTTP response
-    // See below for browser usage
-    doc.pipe(fs.createWriteStream(filepath));
+    doc.pipe(res);
 
     let counter = 1;
     for (const element of QRsInfo) {
@@ -51,13 +49,12 @@ module.exports = function PDFGenerator() {
       counter += 1;
     }
     fs.rmdirSync(tmpQRDirectory);
-    // Finalize PDF file
-    doc.end();
+    return doc.end();
   };
 
   return {
     generateQRCode,
-    generatePDFFromQRs,
+    generatePDF,
     deleteFile
   };
 };

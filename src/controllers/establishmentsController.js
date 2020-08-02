@@ -1,4 +1,7 @@
 module.exports = function establishmentsController(establishmentHandler) {
+  const path = require('path');
+  const PDFGenerator = require('../services/PDFGenerator');
+
   const errorDB = (res, err) => {
     console.log(err.message);
     return res.status(500).json({ reason: 'DB Error' });
@@ -18,6 +21,23 @@ module.exports = function establishmentsController(establishmentHandler) {
         return res.status(200).json(establishment);
       })
       .catch(err => errorDB(res, err));
+  };
+
+  const getEstablishmentPDF = async (req, res, next) => {
+    establishmentId = req.params.establishmentId;
+    try {
+      let PDFData = await establishmentHandler.getPDFData(establishmentId);
+      if (!PDFData) {
+        return res.status(404).json({ reason: 'Establishment not found' });
+      }
+      res.writeHead( 200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=QRs.pdf'
+      } );
+      return await PDFGenerator().generatePDF(res, PDFData);
+    } catch(err) {
+      errorDB(res, err);
+    }
   };
 
   const add = async (req, res, next) => {
@@ -62,6 +82,7 @@ module.exports = function establishmentsController(establishmentHandler) {
     get,
     getSingleEstablishment,
     update,
-    remove
+    remove,
+    getEstablishmentPDF
   };
 };
