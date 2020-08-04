@@ -29,7 +29,6 @@ module.exports = function EstablishmentHandler() {
     };
 
     let QRIds = [];
-    let QRs = [];
 
     for (const _qr of content.QRs) {
       let current_qr = {
@@ -41,12 +40,9 @@ module.exports = function EstablishmentHandler() {
         establishmentId: establishmentData._id
       };
       QRIds.push(current_qr._id);
-      QRs.push(current_qr);
+      await QRHandler().addQR(current_qr);
     }
     establishmentData['QRs'] = QRIds;
-    for (const _qr of QRs) {
-      await QRHandler().addQR(_qr);
-    }
     let newEstablishment = new Establishment(establishmentData);
     return newEstablishment.save();
   };
