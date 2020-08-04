@@ -4,13 +4,13 @@ let req;
 let res;
 let next;
 
-let id = 1;
+let _id = 1;
 let type = 'restaurant';
 let name = 'Mc Donalds';
 let email = 'mcdonalds@gmail.com';
 let address = 'Cabildo 1010';
 let city = 'CABA';
-let province = 'CABA';
+let state = 'CABA';
 let zip = '1430ACV';
 let country = 'Argentina';
 let QRs = ['ASDF1234', 'QWER4563'];
@@ -39,13 +39,13 @@ beforeEach(() => {
 });
 
 const exampleEstablishment = {
-  id,
+  _id,
   type,
   name,
   email,
   address,
   city,
-  province,
+  state,
   zip,
   country,
   QRs
@@ -70,13 +70,13 @@ describe('get', () => {
 describe('getSingleEstablishment', () => {
   describe('when a establishment is retrieved', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       establishmentHandler.findEstablishment.mockResolvedValue(exampleEstablishment);
     });
 
     test('should respond successfully', async () => {
       await establishmentsController.getSingleEstablishment(req, res, next);
-      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(id);
+      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(exampleEstablishment);
     });
@@ -84,13 +84,13 @@ describe('getSingleEstablishment', () => {
 
   describe('when an inexistent establishment is retrieved', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       establishmentHandler.findEstablishment.mockResolvedValue(null);
     });
 
     test('should respond successfully', async () => {
       await establishmentsController.getSingleEstablishment(req, res, next);
-      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(id);
+      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ reason: 'Establishment not found' });
     });
@@ -111,7 +111,7 @@ describe('add', () => {
       expect(establishmentHandler.establishmentExists).toHaveBeenCalledWith(exampleEstablishment);
       expect(establishmentHandler.addEstablishment).toHaveBeenCalledWith(exampleEstablishment);
       expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith({ id: exampleEstablishment.id });
+      expect(res.json).toHaveBeenCalledWith({ _id: exampleEstablishment._id });
     });
   });
 
@@ -154,7 +154,7 @@ describe('update', () => {
 
   describe('when a establishment is correctly updated', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       req.body = newData;
       establishmentHandler.updateEstablishment.mockResolvedValue({ n: 1 });
       establishmentHandler.findEstablishment.mockResolvedValue(exampleEstablishment);
@@ -162,8 +162,8 @@ describe('update', () => {
 
     test('should respond successfully', async () => {
       await establishmentsController.update(req, res, next);
-      expect(establishmentHandler.updateEstablishment).toHaveBeenCalledWith(id, newData);
-      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(id);
+      expect(establishmentHandler.updateEstablishment).toHaveBeenCalledWith(_id, newData);
+      expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(200);
       expect(res.json).toHaveBeenCalledWith(exampleEstablishment);
     });
@@ -171,14 +171,14 @@ describe('update', () => {
 
   describe('when an inexisten establishment is updated', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       req.body = newData;
       establishmentHandler.updateEstablishment.mockResolvedValue({ n: 0 });
     });
 
     test('should respond successfully', async () => {
       await establishmentsController.update(req, res, next);
-      expect(establishmentHandler.updateEstablishment).toHaveBeenCalledWith(id, newData);
+      expect(establishmentHandler.updateEstablishment).toHaveBeenCalledWith(_id, newData);
       expect(establishmentHandler.findEstablishment).not.toHaveBeenCalled();
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ reason: 'Establishment not found' });
@@ -190,26 +190,26 @@ describe('update', () => {
 describe('remove', () => {
   describe('when an existing establishment is removed', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       establishmentHandler.deleteEstablishment.mockResolvedValue({ deletedCount: 1 });
     });
 
     test('should respond successfully', async () => {
       await establishmentsController.remove(req, res, next);
-      expect(establishmentHandler.deleteEstablishment).toHaveBeenCalledWith(id);
+      expect(establishmentHandler.deleteEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(204);
     });
   });
 
   describe('when an inexisting establishment is removed', () => {
     beforeEach(() => {
-      req.params = { establishmentId: id };
+      req.params = { establishmentId: _id };
       establishmentHandler.deleteEstablishment.mockResolvedValue({ deletedCount: 0 });
     });
 
     test('should respond successfully', async () => {
       await establishmentsController.remove(req, res, next);
-      expect(establishmentHandler.deleteEstablishment).toHaveBeenCalledWith(id);
+      expect(establishmentHandler.deleteEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(404);
       expect(res.json).toHaveBeenCalledWith({ reason: 'Establishment not found' });
     });

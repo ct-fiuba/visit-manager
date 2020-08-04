@@ -1,4 +1,6 @@
 const Establishment = require('../schemas/Establishment');
+const mongoose = require('mongoose');
+const QRHandler = require('./QRHandler');
 
 module.exports = function EstablishmentHandler() {
   const findEstablishments = async (query) => {
@@ -6,26 +8,64 @@ module.exports = function EstablishmentHandler() {
   };
 
   const findEstablishment = async (establishmentId) => {
-    return Establishment.findOne({ id: establishmentId });
+    return Establishment.findOne({ _id: establishmentId });
   };
 
   const establishmentExists = async (content) => {
-    return Establishment.findOne({ id: content.id });
+    return Establishment.findOne({ _id: content.id });
   };
 
   const addEstablishment = async (content) => {
-    let newEstablishment = new Establishment(content);
+    let establishmentData = {
+      _id: new mongoose.Types.ObjectId(),
+      type: content.type,
+      name: content.name,
+      email: content.email,
+      address: content.address,
+      city: content.city,
+      state: content.state,
+      zip: content.zip,
+      country: content.country
+    };
+
+    let QRIds = [];
+
+    for (const _qr of content.QRs) {
+      let current_qr = {
+        _id: new mongoose.Types.ObjectId(),
+        name: _qr.name,
+        m2: _qr.m2,
+        exitQR: _qr.exitQR,
+        openPlace: _qr.openPlace,
+        establishmentId: establishmentData._id
+      };
+      QRIds.push(current_qr._id);
+      await QRHandler().addQR(current_qr);
+    }
+    establishmentData['QRs'] = QRIds;
+    let newEstablishment = new Establishment(establishmentData);
     return newEstablishment.save();
   };
 
   const updateEstablishment = async (establishmentId, content) => {
-    let modifiedEstablishment = Establishment.updateOne({ id: establishmentId }, content);
+    let modifiedEstablishment = Establishment.updateOne({ _id: establishmentId }, content);
     return modifiedEstablishment;
   };
 
   const deleteEstablishment = async (establishmentId) => {
-    return Establishment.deleteOne({ id: establishmentId });
+    return Establishment.deleteOne({ _id: establishmentId });
   };
+
+  const getPDFData = async (establishmentId) => {
+    let establishment = await Establishment.findOne({ _id: establishmentId });
+    let PDFInfo = [];
+    for (const qr_id of establishment.QRs) {
+      let current_qr = await QRHandler().findQR(qr_id);
+      PDFInfo.push([current_qr.name, qr_id.toString()]);
+    }
+    return PDFInfo;
+  };
+
 
   return {
     findEstablishments,
@@ -33,6 +73,7 @@ module.exports = function EstablishmentHandler() {
     establishmentExists,
     addEstablishment,
     updateEstablishment,
-    deleteEstablishment
+    deleteEstablishment,
+    getPDFData
   };
 };

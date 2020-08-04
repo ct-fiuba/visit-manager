@@ -1,4 +1,7 @@
 module.exports = function establishmentsController(establishmentHandler) {
+  const path = require('path');
+  const PDFGenerator = require('../services/PDFGenerator');
+
   const errorDB = (res, err) => {
     console.log(err.message);
     return res.status(500).json({ reason: 'DB Error' });
@@ -20,15 +23,31 @@ module.exports = function establishmentsController(establishmentHandler) {
       .catch(err => errorDB(res, err));
   };
 
+  const getEstablishmentPDF = async (req, res, next) => {
+    establishmentId = req.params.establishmentId;
+    try {
+      let PDFData = await establishmentHandler.getPDFData(establishmentId);
+      if (!PDFData) {
+        return res.status(404).json({ reason: 'Establishment not found' });
+      }
+      res.writeHead( 200, {
+        'Content-Type': 'application/pdf',
+        'Content-Disposition': 'attachment; filename=QRs.pdf'
+      } );
+      return await PDFGenerator().generatePDF(res, PDFData);
+    } catch(err) {
+      errorDB(res, err);
+    }
+  };
+
   const add = async (req, res, next) => {
     return establishmentHandler.establishmentExists(req.body)
       .then(establishment => {
         if (establishment) {
           return res.status(409).json({ reason: 'Establishment already registered' });
         }
-
        return establishmentHandler.addEstablishment(req.body)
-          .then(establishment => res.status(201).json({ id: establishment.id }))
+          .then(establishment => res.status(201).json({ _id: establishment._id }))
           .catch(err => errorDB(res, err));
       })
       .catch(err => errorDB(res, err));
@@ -63,6 +82,7 @@ module.exports = function establishmentsController(establishmentHandler) {
     get,
     getSingleEstablishment,
     update,
-    remove
+    remove,
+    getEstablishmentPDF
   };
 };

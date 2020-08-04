@@ -6,23 +6,41 @@ mongoose.connect(mongoURL);
 
 let server;
 
-let id1 = 1;
 let type1 = 'restaurant';
 let name1 = 'Mc Donalds';
 let email1 = 'mcdonalds@gmail.com';
 let address1 = 'Cabildo 1010';
 let city = 'CABA';
-let province = 'CABA';
+let state = 'CABA';
 let zip = '1430ACV';
 let country = 'Argentina';
-let QRs1 = ['ASDF1234', 'QWER4563'];
+let QRs1 = [
+    {
+      name: "Primer piso",
+      exitQR: true,
+      m2: "1000",
+      openPlace: false
+    },
+    {
+      name: "Terraza",
+      exitQR: false,
+      m2: "400",
+      openPlace: true
+    }
+  ];
 
-let id2 = 2;
 let type2 = 'supermarket';
 let name2 = 'Coto';
 let email2 = 'coto@gmail.com';
 let address2 = 'Cabildo 2020';
-let QRs2 = ['POU034F', 'ZXCV4567'];
+let QRs2 = [
+    {
+      name: "Planta baja",
+      exitQR: false,
+      m2: "3000",
+      openPlace: false
+    }
+  ];
 
 beforeAll(async () => {
   server = await app.listen(5005);
@@ -42,39 +60,46 @@ describe('App test', () => {
 
   describe('establishments', () => {
     const correctEstablishment1 = {
-      id: id1,
       type: type1,
       name: name1,
       email: email1,
       address: address1,
       city,
-      province,
+      state,
       zip,
       country,
       QRs: QRs1
     };
     const correctEstablishment2 = {
-      id: id2,
       type: type2,
       name: name2,
       email: email2,
       address: address2,
       city,
-      province,
+      state,
       zip,
       country,
       QRs: QRs2
     };
 
+    let establishment_id1;
+    let establishment_id2;
+
     describe('add first establishments', () => {
       test('should return 201', async () => {
-        await request(server).post('/establishments').send(correctEstablishment1).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment1).then(res => {
+          expect(res.status).toBe(201);
+          establishment_id1 = res.body._id;
+        });
       });
     });
 
     describe('add second establishments', () => {
       test('should return 201', async () => {
-        await request(server).post('/establishments').send(correctEstablishment2).expect('Content-Type', /json/).expect(201);
+        await request(server).post('/establishments').send(correctEstablishment2).then(res => {
+          expect(res.status).toBe(201);
+          establishment_id2 = res.body._id;
+        });
       });
     });
 
@@ -103,6 +128,16 @@ describe('App test', () => {
             expect(res.status).toBe(200);
             expect(res.body).toHaveLength(1);
           });
+        });
+      });
+    });
+
+    describe('get PDF file', () => {
+      test('should get a PDF document in the response', async () => {
+        await request(server).get(`/establishments/PDF/${establishment_id1}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.header['content-type']).toBe('application/pdf');
+          expect(res.header['content-disposition']).toContain('attachment');
         });
       });
     });

@@ -14,7 +14,6 @@ const config = {
 module.exports = function app() {
   const app = express();
   app.use(cors());
-
   app.disable('x-powered-by');
   app.use(bodyParser.json());
   app.use(establishmentsRouter());

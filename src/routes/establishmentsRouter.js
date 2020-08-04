@@ -11,6 +11,7 @@ module.exports = function establishmentsRouter() {
       .get('/', establishmentsController.get)
       .post('/', bodyValidator.addValidations, bodyValidator.validate, establishmentsController.add)
       .get('/:establishmentId', establishmentsController.getSingleEstablishment)
+      .get('/PDF/:establishmentId', establishmentsController.getEstablishmentPDF)
       .put('/:establishmentId', bodyValidator.updateValidations, bodyValidator.validate, establishmentsController.update)
       .delete('/:establishmentId', establishmentsController.remove)
   );

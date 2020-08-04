@@ -1,12 +1,6 @@
 const mongoose = require("mongoose");
-const AutoIncrement = require('mongoose-sequence')(mongoose);
 
 let establishmentSchema = mongoose.Schema({
-  id: {
-    type: Number,
-    required: true,
-    unique: true
-  },
   type: {
     type: String,
     required: true
@@ -27,7 +21,7 @@ let establishmentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  province: {
+  state: {
     type: String,
     required: true
   },
@@ -39,8 +33,7 @@ let establishmentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  QRs: [String]
+  QRs: [mongoose.Schema.Types.ObjectId]
 });
-establishmentSchema.plugin(AutoIncrement, {inc_field: 'id'});
 
 const Establishment = module.exports = mongoose.model('Establishment', establishmentSchema);
