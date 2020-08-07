@@ -1,6 +1,6 @@
 const Establishment = require('../schemas/Establishment');
 const mongoose = require('mongoose');
-const QRHandler = require('./QRHandler');
+const SpaceHandler = require('./SpaceHandler');
 
 module.exports = function EstablishmentHandler() {
   const findEstablishments = async (query) => {
@@ -28,21 +28,21 @@ module.exports = function EstablishmentHandler() {
       country: content.country
     };
 
-    let QRIds = [];
+    let SpaceIds = [];
 
-    for (const _qr of content.QRs) {
-      let current_qr = {
+    for (const _space of content.spaces) {
+      let current_space = {
         _id: new mongoose.Types.ObjectId(),
-        name: _qr.name,
-        m2: _qr.m2,
-        exitQR: _qr.exitQR,
-        openPlace: _qr.openPlace,
+        name: _space.name,
+        m2: _space.m2,
+        exitQR: _space.exitQR,
+        openPlace: _space.openPlace,
         establishmentId: establishmentData._id
       };
-      QRIds.push(current_qr._id);
-      await QRHandler().addQR(current_qr);
+      SpaceIds.push(current_space._id);
+      await SpaceHandler().addSpace(current_space);
     }
-    establishmentData['QRs'] = QRIds;
+    establishmentData['spaces'] = SpaceIds;
     let newEstablishment = new Establishment(establishmentData);
     return newEstablishment.save();
   };
@@ -59,9 +59,9 @@ module.exports = function EstablishmentHandler() {
   const getPDFData = async (establishmentId) => {
     let establishment = await Establishment.findOne({ _id: establishmentId });
     let PDFInfo = [];
-    for (const qr_id of establishment.QRs) {
-      let current_qr = await QRHandler().findQR(qr_id);
-      PDFInfo.push([current_qr.name, qr_id.toString()]);
+    for (const space_id of establishment.spaces) {
+      let current_space = await SpaceHandler().findSpace(space_id);
+      PDFInfo.push([current_space.name, space_id.toString()]);
     }
     return PDFInfo;
   };
