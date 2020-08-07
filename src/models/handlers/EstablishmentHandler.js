@@ -61,7 +61,12 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
-      PDFInfo.push([current_space.name, space_id.toString()]);
+      if (current_space.exitQR) {
+        PDFInfo.push([`${current_space.name} Entrada`, space_id.toString()]);
+        PDFInfo.push([`${current_space.name} Salida`, `${space_id.toString()}_exit`]);
+      } else {
+        PDFInfo.push([current_space.name, space_id.toString()]);
+      }
     }
     return PDFInfo;
   };
