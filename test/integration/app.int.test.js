@@ -14,7 +14,7 @@ let city = 'CABA';
 let state = 'CABA';
 let zip = '1430ACV';
 let country = 'Argentina';
-let QRs1 = [
+let spaces1 = [
     {
       name: "Primer piso",
       exitQR: true,
@@ -33,7 +33,7 @@ let type2 = 'supermarket';
 let name2 = 'Coto';
 let email2 = 'coto@gmail.com';
 let address2 = 'Cabildo 2020';
-let QRs2 = [
+let spaces2 = [
     {
       name: "Planta baja",
       exitQR: false,
@@ -68,7 +68,7 @@ describe('App test', () => {
       state,
       zip,
       country,
-      QRs: QRs1
+      spaces: spaces1
     };
     const correctEstablishment2 = {
       type: type2,
@@ -79,7 +79,7 @@ describe('App test', () => {
       state,
       zip,
       country,
-      QRs: QRs2
+      spaces: spaces2
     };
 
     let establishment_id1;

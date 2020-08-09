@@ -13,7 +13,7 @@ let city = 'CABA';
 let state = 'CABA';
 let zip = '1430ACV';
 let country = 'Argentina';
-let QRs = ['ASDF1234', 'QWER4563'];
+let spaces = ['ASDF1234', 'QWER4563'];
 
 beforeEach(() => {
   establishmentHandler = {
@@ -48,7 +48,7 @@ const exampleEstablishment = {
   state,
   zip,
   country,
-  QRs
+  spaces
 };
 
 describe('get', () => {

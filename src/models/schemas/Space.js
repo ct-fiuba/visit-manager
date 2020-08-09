@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-let qrSchema = mongoose.Schema({
+let spaceSchema = mongoose.Schema({
   name: {
     type: String,
     required: true
@@ -23,4 +23,4 @@ let qrSchema = mongoose.Schema({
   }
 });
 
-const QR = module.exports = mongoose.model('QR', qrSchema);
+const Space = module.exports = mongoose.model('Space', spaceSchema);

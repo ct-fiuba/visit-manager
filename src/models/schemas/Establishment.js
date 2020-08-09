@@ -33,7 +33,7 @@ let establishmentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  QRs: [mongoose.Schema.Types.ObjectId]
+  spaces: [mongoose.Schema.Types.ObjectId]
 });
 
 const Establishment = module.exports = mongoose.model('Establishment', establishmentSchema);
