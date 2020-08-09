@@ -9,7 +9,7 @@ let spaceSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  exitQR: {
+  hasExit: {
     type: Boolean,
     required: true
   },

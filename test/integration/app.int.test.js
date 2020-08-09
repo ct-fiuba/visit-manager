@@ -17,13 +17,13 @@ let country = 'Argentina';
 let spaces1 = [
     {
       name: "Primer piso",
-      exitQR: true,
+      hasExit: true,
       m2: "1000",
       openPlace: false
     },
     {
       name: "Terraza",
-      exitQR: false,
+      hasExit: false,
       m2: "400",
       openPlace: true
     }
@@ -36,7 +36,7 @@ let address2 = 'Cabildo 2020';
 let spaces2 = [
     {
       name: "Planta baja",
-      exitQR: false,
+      hasExit: false,
       m2: "3000",
       openPlace: false
     }
