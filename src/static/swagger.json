@@ -12,10 +12,10 @@
     }
   ],
   "paths": {
-    "/establishment": {
+    "/establishments": {
       "post": {
         "tags": [
-          "establishment"
+          "establishments"
         ],
         "summary": "Register new establishment",
         "operationId": "registerEstablishment",
@@ -69,7 +69,7 @@
       },
       "get": {
         "tags": [
-          "establishment"
+          "establishments"
         ],
         "summary": "Get all establishments",
         "description": "",
@@ -99,7 +99,7 @@
     "/establishments/{establishmentId}": {
       "get": {
         "tags": [
-          "establishment"
+          "establishments"
         ],
         "summary": "Get establishment by id",
         "description": "",
@@ -132,7 +132,7 @@
       },
       "put": {
         "tags": [
-          "establishment"
+          "establishments"
         ],
         "summary": "Delete Establishment by id",
         "description": "",
@@ -184,7 +184,7 @@
       },
       "delete": {
         "tags": [
-          "establishment"
+          "establishments"
         ],
         "summary": "Delete establishment by id",
         "description": "",
