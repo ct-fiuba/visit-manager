@@ -5,6 +5,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile.web
+    image: ct-visit-manager:latest
     environment:
       - PORT=5005
     ports:

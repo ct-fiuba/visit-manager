@@ -13,7 +13,7 @@ module.exports = function bodyValidatorMiddleware() {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
       let firstError = errors.array()[0];
-      return res.status(400).json({ reason: firstError.msg });
+      return res.status(400).json({ reason: firstError });
     }
 
     next();
