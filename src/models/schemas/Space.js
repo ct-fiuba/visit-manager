@@ -11,7 +11,7 @@ let spaceSchema = mongoose.Schema({
   },
   estimatedVisitDuration: {
     type: Number,
-    required: true
+    required: false
   },
   hasExit: {
     type: Boolean,
