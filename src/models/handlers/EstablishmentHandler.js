@@ -35,6 +35,7 @@ module.exports = function EstablishmentHandler() {
         _id: new mongoose.Types.ObjectId(),
         name: _space.name,
         m2: _space.m2,
+        estimatedVisitDuration: _space.estimatedVisitDuration,
         hasExit: _space.hasExit,
         openPlace: _space.openPlace,
         establishmentId: establishmentData._id
