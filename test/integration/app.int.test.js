@@ -19,12 +19,14 @@ let spaces1 = [
       name: "Primer piso",
       hasExit: true,
       m2: "1000",
+      estimatedVisitDuration: "60",
       openPlace: false
     },
     {
       name: "Terraza",
       hasExit: false,
       m2: "400",
+      estimatedVisitDuration: "45",
       openPlace: true
     }
   ];
@@ -38,6 +40,7 @@ let spaces2 = [
       name: "Planta baja",
       hasExit: false,
       m2: "3000",
+      estimatedVisitDuration: "30",
       openPlace: false
     }
   ];

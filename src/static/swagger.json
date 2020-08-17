@@ -274,6 +274,10 @@
                   "type": "integer",
                   "example": 200
                 },
+                "estimatedVisitDuration": {
+                  "type": "integer",
+                  "example": 200
+                },
                 "openSpace": {
                   "type": "boolean",
                   "example": "true"
@@ -339,6 +343,10 @@
                   "example": "Open Store"
                 },
                 "m2": {
+                  "type": "integer",
+                  "example": 200
+                },
+                "estimatedVisitDuration": {
                   "type": "integer",
                   "example": 200
                 },
