@@ -1,15 +1,18 @@
 language: node_js
+
 node_js:
   - "node"
+
 services:
   - docker
-sudo: required
 
-before_install:
-  - docker run --rm -d -p 27017:27017 --name="test" mongo:3.6.4
+sudo: required
 
 install:
   - npm install
+
+before_script:
+  - docker run --rm -d -p 27017:27017 --name="test" mongo:3.6.4
 
 script:
   - npm test && npm run test:integration
