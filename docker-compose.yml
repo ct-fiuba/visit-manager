@@ -6,12 +6,15 @@ services:
       context: .
       dockerfile: Dockerfile.web
     image: ct-visit-manager:latest
+    env_file:
+      - .env
     environment:
       - PORT=5005
+      - MONGODB_URI=mongodb://ct-visit-manager-db:27017/ct-visit-manager-db
     ports:
-      - "5005:5005"
+      - "${PORT}:${PORT}"
     depends_on:
-      - contact-tracing-db
+      - ct-visit-manager-db
 
-  contact-tracing-db:
+  ct-visit-manager-db:
     image: mongo:3.6.4
