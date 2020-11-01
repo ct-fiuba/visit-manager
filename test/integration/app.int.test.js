@@ -227,7 +227,7 @@ describe('App test', () => {
         });
       });
 
-      test('get visits to the second space shoulld return 0 scans', async () => {
+      test('get visits to the second space should return 0 scans', async () => {
         await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(0);
