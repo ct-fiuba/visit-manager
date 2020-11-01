@@ -218,7 +218,7 @@ describe('App test', () => {
         });
       });
 
-      test('get visits to the first space shoulld return 2 scans', async () => {
+      test('get visits to the first space should return 2 scans', async () => {
         await request(server).get(`/visits?scanCode=${spaces1_id[0]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(2);
@@ -242,6 +242,25 @@ describe('App test', () => {
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);
+        });
+      });
+
+      test('add visit to the second space with _exit suffix should return 201', async () => {
+        const visit = {
+          scanCode: `${spaces1_id[1]}_exit`,
+          userGeneratedCode: "POIQULNVOER",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('get visits to the second space should return 1 scan with isExitScan set to true', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(1);
+          expect(res.body[0].isExitScan).toBeTruthy();
         });
       });
     });
