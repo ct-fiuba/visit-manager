@@ -45,16 +45,16 @@ let spaces2 = [
     }
   ];
 
-beforeAll(async () => {
-  server = await app.listen(5005);
-});
-
-afterAll(async (done) => {
-  await mongoose.connection.close();
-  await server.close(done);
-});
-
 describe('App test', () => {
+  beforeAll(async () => {
+    server = await app.listen(5005);
+  });
+
+  afterAll(async (done) => {
+    await mongoose.connection.close();
+    await server.close(done);
+  });
+
   describe('ping', () => {
     test('should return 200', async () => {
       await request(server).get('/ping').expect(200);
@@ -141,6 +141,96 @@ describe('App test', () => {
           expect(res.status).toBe(200);
           expect(res.header['content-type']).toBe('application/pdf');
           expect(res.header['content-disposition']).toContain('attachment');
+        });
+      });
+    });
+  });
+
+  describe('visits', () => {
+    const establishment = {
+      type: type1,
+      name: name1,
+      email: email1,
+      address: address1,
+      city,
+      state,
+      zip,
+      country,
+      spaces: spaces1
+    };
+
+    let establishment_id1;
+    let spaces1_id;
+
+    beforeAll(async () => {
+      await request(server).post('/establishments').send(establishment).then(res1 => {
+        expect(res1.status).toBe(201);
+        establishment_id1 = res1.body._id;
+      });
+      await request(server).get(`/establishments/${establishment_id1}`).then(res2 => {
+        expect(res2.status).toBe(200);
+        spaces1_id = res2.body.spaces;
+      });
+    });
+
+    describe('add visits', () => {
+      test('add first visit should return 201', async () => {
+        const visit = {
+          scanCode: spaces1_id[0],
+          userGeneratedCode: "QWER1234YUIO",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('add second visit to the same space should return 201', async () => {
+        const visit = {
+          scanCode: spaces1_id[0],
+          userGeneratedCode: "BNIUO1NT12NBF",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('add visit with the same generated code to the same space should return 409', async () => {
+        const visit = {
+          scanCode: spaces1_id[0],
+          userGeneratedCode: "QWER1234YUIO",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(409);
+        });
+      });
+
+      test('add visit with the same generated code to the other space should return 409', async () => {
+        const visit = {
+          scanCode: spaces1_id[1],
+          userGeneratedCode: "QWER1234YUIO",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(409);
+        });
+      });
+
+      test('get visits to the first space shoulld return 2 scans', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[0]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(2);
+          expect([res.body[0].userGeneratedCode, res.body[1].userGeneratedCode]).toContain("BNIUO1NT12NBF");
+          expect([res.body[0].userGeneratedCode, res.body[1].userGeneratedCode]).toContain("QWER1234YUIO");
+        });
+      });
+
+      test('get visits to the second space shoulld return 0 scans', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(0);
         });
       });
     });
