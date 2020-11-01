@@ -17,8 +17,15 @@ module.exports = function visitsController(visitHandler) {
         if (visit) {
           return res.status(409).json({ reason: 'Visit already registered' });
         }
-       return visitHandler.addVisit(req.body)
-          .then(visit => res.status(201).json({ _id: visit._id }))
+        return visitHandler.spaceExists(req.body.scanCode)
+          .then(space => {
+            if (!space) {
+              return res.status(404).json({ reason: 'Space linked to the scan code not found' });
+            }
+            return visitHandler.addVisit(req.body)
+              .then(visit => res.status(201).json({ _id: visit._id }))
+              .catch(err => errorDB(res, err));
+          })
           .catch(err => errorDB(res, err));
       })
       .catch(err => errorDB(res, err));

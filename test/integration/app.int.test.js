@@ -233,6 +233,17 @@ describe('App test', () => {
           expect(res.body.length).toBe(0);
         });
       });
+
+      test('add visit to non existent scan code should return 404', async () => {
+        const visit = {
+          scanCode: new mongoose.Types.ObjectId(),
+          userGeneratedCode: "XCBVQIWERU1234",
+          timestamp: Date.now()
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(404);
+        });
+      });
     });
   });
 });

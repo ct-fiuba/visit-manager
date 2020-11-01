@@ -5,12 +5,12 @@ module.exports = function SpaceHandler() {
     return Space.find(query);
   };
 
-  const findSpace = async (SpaceId) => {
-    return Space.findOne({ _id: SpaceId });
+  const findSpace = async (spaceId) => {
+    return Space.findOne({ _id: spaceId });
   };
 
-  const SpaceExists = async (content) => {
-    return Space.findOne({ _id: content.id });
+  const spaceExists = async (spaceId) => {
+    return Space.findOne({ _id: spaceId });
   };
 
   const addSpace = async (content) => {
@@ -30,7 +30,7 @@ module.exports = function SpaceHandler() {
   return {
     findSpaces,
     findSpace,
-    SpaceExists,
+    spaceExists,
     addSpace,
     updateSpace,
     deleteSpace

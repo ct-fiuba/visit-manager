@@ -13,6 +13,7 @@ beforeEach(() => {
   visitHandler = {
     findVisits: jest.fn(),
     visitExists: jest.fn(),
+    spaceExists: jest.fn(),
     addVisit: jest.fn()
   };
   visitsController = visitsControllerFactory(visitHandler);
@@ -57,12 +58,20 @@ describe('add', () => {
     beforeEach(() => {
       req.body = exampleVisit;
       visitHandler.visitExists.mockResolvedValue(null);
+      visitHandler.spaceExists.mockResolvedValue({
+        name: "Primer piso",
+        hasExit: true,
+        m2: "1000",
+        estimatedVisitDuration: "60",
+        openPlace: false
+      });
       visitHandler.addVisit.mockResolvedValue(exampleVisit);
     });
 
     test('should respond successfully', async () => {
       await visitsController.add(req, res, next);
       expect(visitHandler.visitExists).toHaveBeenCalledWith(exampleVisit);
+      expect(visitHandler.spaceExists).toHaveBeenCalledWith(exampleVisit.scanCode);
       expect(visitHandler.addVisit).toHaveBeenCalledWith(exampleVisit);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({ _id: exampleVisit._id });

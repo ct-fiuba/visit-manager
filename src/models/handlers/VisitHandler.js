@@ -1,5 +1,6 @@
 const Visit = require('../schemas/Visit');
 const mongoose = require('mongoose');
+const SpaceHandler = require('./SpaceHandler');
 
 module.exports = function VisitHandler() {
   const findVisits = async (query) => {
@@ -8,6 +9,14 @@ module.exports = function VisitHandler() {
 
   const visitExists = async (content) => {
     return Visit.findOne({ userGeneratedCode: content.userGeneratedCode });
+  };
+
+  const spaceExists = async (scanCode) => {
+    let spaceId = scanCode;
+    if (scanCode.substr(scanCode.length - 5) === '_exit') {
+      spaceId = scanCode.substr(0, scanCode.length - 5);
+    }
+    return SpaceHandler().spaceExists(spaceId);
   };
 
   const addVisit = async (content) => {
@@ -32,6 +41,7 @@ module.exports = function VisitHandler() {
   return {
     findVisits,
     visitExists,
+    spaceExists,
     addVisit
   };
 };
