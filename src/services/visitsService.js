@@ -1,4 +1,4 @@
-module.exports = function visitRegister(visitHandler) {
+module.exports = function visitsService(visitHandler) {
   const errorDB = (res, err) => {
     console.log(err.message);
     return res.status(500).json({ reason: 'DB Error' });

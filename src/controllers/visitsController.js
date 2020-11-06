@@ -1,6 +1,6 @@
-module.exports = function visitsController(visitHandler) {
-  const visitRegistration = require('../services/visitRegistration');
+const visitsService = require('../services/visitsService');
 
+module.exports = function visitsController(visitHandler) {
   const errorDB = (res, err) => {
     console.log(err.message);
     return res.status(500).json({ reason: 'DB Error' });
@@ -14,7 +14,7 @@ module.exports = function visitsController(visitHandler) {
   };
 
   const add = async (req, res, next) => {
-    return await visitRegistration(visitHandler).registerVisit(req, res);
+    return await visitsService(visitHandler).registerVisit(req, res);
   };
 
   return {
