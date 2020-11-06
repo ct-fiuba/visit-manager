@@ -1,5 +1,4 @@
 module.exports = function establishmentsController(establishmentHandler) {
-  const path = require('path');
   const PDFGenerator = require('../services/PDFGenerator');
 
   const errorDB = (res, err) => {

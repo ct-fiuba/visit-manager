@@ -203,6 +203,86 @@
           }
         }
       }
+    },
+    "/visits": {
+      "post": {
+        "tags": [
+          "visits"
+        ],
+        "summary": "Register new visit",
+        "operationId": "addVisit",
+        "requestBody": {
+          "description": "Created visit object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VisitNew"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Visit registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "1"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields / Invalid visibility"
+          },
+          "404": {
+            "description": "Space linked to the scan code not found"
+          },
+          "409": {
+            "description": "Establishment already registered"
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "visits"
+        ],
+        "summary": "Get all visits",
+        "description": "",
+        "operationId": "getVisits",
+        "responses": {
+          "200": {
+            "description": "Visits registered in Visit Manager",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "type": "object",
+                    "allOf": [
+                      {
+                        "$ref": "#/components/schemas/Visit"
+                      }
+                    ]
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
     }
   },
   "components": {
@@ -393,6 +473,60 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          }
+        }
+      },
+      "VisitNew": {
+        "type": "object",
+        "required": [
+          "scanCode",
+          "userGeneratedCode",
+          "timestamp",
+          "genuxToken"
+        ],
+        "properties": {
+          "scanCode": {
+            "type": "string",
+            "example": "MNPQWOEUPO452345"
+          },
+          "userGeneratedCode": {
+            "type": "string",
+            "example": "1PWIOEJPOVUP12OI34J"
+          },
+          "timestamp": {
+            "type": "datetime",
+            "example": "1970-01-01 00:00:01"
+          },
+          "genuxToken": {
+            "type": "string",
+            "example": "O1LENWFPO1H3N2ORNSDFV"
+          }
+        }
+      },
+      "Visit": {
+        "type": "object",
+        "required": [
+          "scanCode",
+          "userGeneratedCode",
+          "timestamp",
+          "isExitScan"
+        ],
+        "properties": {
+          "scanCode": {
+            "type": "string",
+            "example": "MNPQWOEUPO452345"
+          },
+          "userGeneratedCode": {
+            "type": "string",
+            "example": "1PWIOEJPOVUP12OI34J"
+          },
+          "timestamp": {
+            "type": "datetime",
+            "example": "1970-01-01 00:00:01"
+          },
+          "isExitScan": {
+            "type": "boolean",
+            "example": "true"
           }
         }
       }
