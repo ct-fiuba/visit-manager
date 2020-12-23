@@ -111,7 +111,7 @@ describe('add', () => {
       expect(establishmentHandler.establishmentExists).toHaveBeenCalledWith(exampleEstablishment);
       expect(establishmentHandler.addEstablishment).toHaveBeenCalledWith(exampleEstablishment);
       expect(res.status).toHaveBeenCalledWith(201);
-      expect(res.json).toHaveBeenCalledWith({ _id: exampleEstablishment._id });
+      expect(res.json).toHaveBeenCalledWith({ _id: exampleEstablishment._id, spaces: exampleEstablishment.spaces });
     });
   });
 
