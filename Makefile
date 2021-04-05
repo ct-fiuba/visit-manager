@@ -5,8 +5,8 @@ install:
 	npm install;
 
 .PHONY: run
-run: install
-	npm start;
+run:
+	bash ./run.sh
 
 .PHONY: test
 test:
