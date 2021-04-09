@@ -361,6 +361,10 @@
                 "openSpace": {
                   "type": "boolean",
                   "example": "true"
+                },
+                "n95Mandatory": {
+                  "type": "boolean",
+                  "example": "false"
                 }
               }
             }
@@ -433,6 +437,10 @@
                 "openSpace": {
                   "type": "boolean",
                   "example": "true"
+                },
+                "n95Mandatory": {
+                  "type": "boolean",
+                  "example": "false"
                 }
               }
             }
@@ -509,7 +517,9 @@
           "scanCode",
           "userGeneratedCode",
           "timestamp",
-          "isExitScan"
+          "isExitScan",
+          "vaccinated",
+          "covidRecovered"
         ],
         "properties": {
           "scanCode": {
@@ -525,6 +535,26 @@
             "example": "1970-01-01 00:00:01"
           },
           "isExitScan": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "vaccinated": {
+            "type": "integer",
+            "example": "1"
+          },
+          "vaccineReceived": {
+            "type": "string",
+            "example": "Pfizer"
+          },
+          "vaccinatedDate": {
+            "type": "datetime",
+            "example": "1970-01-01 00:00:01"
+          },
+          "covidRecovered": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "covidRecoveredDate": {
             "type": "boolean",
             "example": "true"
           }

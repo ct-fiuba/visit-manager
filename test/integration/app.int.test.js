@@ -20,14 +20,16 @@ let spaces1 = [
       hasExit: true,
       m2: "1000",
       estimatedVisitDuration: "60",
-      openPlace: false
+      openPlace: false,
+      n95Mandatory: false
     },
     {
       name: "Terraza",
       hasExit: false,
       m2: "400",
       estimatedVisitDuration: "45",
-      openPlace: true
+      openPlace: true,
+      n95Mandatory: false
     }
   ];
 
@@ -41,7 +43,8 @@ let spaces2 = [
       hasExit: false,
       m2: "3000",
       estimatedVisitDuration: "30",
-      openPlace: false
+      openPlace: false,
+      n95Mandatory: false
     }
   ];
 

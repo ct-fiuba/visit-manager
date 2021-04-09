@@ -38,7 +38,8 @@ module.exports = function EstablishmentHandler() {
         estimatedVisitDuration: _space.estimatedVisitDuration,
         hasExit: _space.hasExit,
         openPlace: _space.openPlace,
-        establishmentId: establishmentData._id
+        establishmentId: establishmentData._id,
+        n95Mandatory: _space.n95Mandatory
       };
       SpaceIds.push(current_space._id);
       await SpaceHandler().addSpace(current_space);

@@ -24,6 +24,10 @@ let spaceSchema = mongoose.Schema({
   establishmentId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
+  },
+  n95Mandatory: {
+    type: Boolean,
+    required: true
   }
 });
 
