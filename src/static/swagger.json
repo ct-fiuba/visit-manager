@@ -358,7 +358,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openSpace": {
+                "openPlace": {
                   "type": "boolean",
                   "example": "true"
                 },
@@ -434,7 +434,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openSpace": {
+                "openPlace": {
                   "type": "boolean",
                   "example": "true"
                 },
