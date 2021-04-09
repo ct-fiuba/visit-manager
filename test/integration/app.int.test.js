@@ -181,7 +181,9 @@ describe('App test', () => {
         const visit = {
           scanCode: spaces1_id[0],
           userGeneratedCode: "QWER1234YUIO",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -192,7 +194,9 @@ describe('App test', () => {
         const visit = {
           scanCode: spaces1_id[0],
           userGeneratedCode: "BNIUO1NT12NBF",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -203,7 +207,9 @@ describe('App test', () => {
         const visit = {
           scanCode: spaces1_id[0],
           userGeneratedCode: "QWER1234YUIO",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -214,7 +220,9 @@ describe('App test', () => {
         const visit = {
           scanCode: spaces1_id[1],
           userGeneratedCode: "QWER1234YUIO",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -241,7 +249,9 @@ describe('App test', () => {
         const visit = {
           scanCode: new mongoose.Types.ObjectId(),
           userGeneratedCode: "XCBVQIWERU1234",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);
@@ -252,7 +262,9 @@ describe('App test', () => {
         const visit = {
           scanCode: `${spaces1_id[1]}_exit`,
           userGeneratedCode: "POIQULNVOER",
-          timestamp: Date.now()
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
