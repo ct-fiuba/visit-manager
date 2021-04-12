@@ -2,7 +2,8 @@ const express = require('express');
 const bodyEstablishmentsValidator = require('../middlewares/bodyEstablishmentsValidatorMiddleware')();
 
 const establishmentHandler = require('../models/handlers/EstablishmentHandler');
-const establishmentsController = require('../controllers/establishmentsController')(establishmentHandler());
+const spaceHandler = require('../models/handlers/SpaceHandler');
+const establishmentsController = require('../controllers/establishmentsController')(establishmentHandler(), spaceHandler());
 
 module.exports = function establishmentsRouter() {
   return express.Router().use(
