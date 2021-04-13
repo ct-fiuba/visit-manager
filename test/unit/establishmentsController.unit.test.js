@@ -14,6 +14,28 @@ let state = 'CABA';
 let zip = '1430ACV';
 let country = 'Argentina';
 let spaces = ['ASDF1234', 'QWER4563'];
+let spacesInfo = [
+  {
+    _id: "ASDF1234",
+    name: "id qr 1",
+    m2: 10,
+    estimatedVisitDuration: 30,
+    hasExit: false,
+    openPlace: true,
+    establishmentId: _id,
+    n95Mandatory: true
+  },
+  {
+    _id: "QWER4563",
+    name: "id qr 2",
+    m2: 20,
+    estimatedVisitDuration: 40,
+    hasExit: false,
+    openPlace: true,
+    establishmentId: _id,
+    n95Mandatory: true
+  }
+];
 
 beforeEach(() => {
   establishmentHandler = {
@@ -24,7 +46,10 @@ beforeEach(() => {
     updateEstablishment: jest.fn(),
     deleteEstablishment: jest.fn()
   };
-  establishmentsController = establishmentsControllerFactory(establishmentHandler);
+  spaceHandler = {
+    findSpaces: jest.fn()
+  };
+  establishmentsController = establishmentsControllerFactory(establishmentHandler, spaceHandler);
   req = {
     body: {},
     params: {},
@@ -72,6 +97,7 @@ describe('getSingleEstablishment', () => {
     beforeEach(() => {
       req.params = { establishmentId: _id };
       establishmentHandler.findEstablishment.mockResolvedValue(exampleEstablishment);
+      spaceHandler.findSpaces.mockResolvedValue(spacesInfo);
     });
 
     test('should respond successfully', async () => {
@@ -86,6 +112,7 @@ describe('getSingleEstablishment', () => {
     beforeEach(() => {
       req.params = { establishmentId: _id };
       establishmentHandler.findEstablishment.mockResolvedValue(null);
+      spaceHandler.findSpaces.mockResolvedValue(spacesInfo);
     });
 
     test('should respond successfully', async () => {
