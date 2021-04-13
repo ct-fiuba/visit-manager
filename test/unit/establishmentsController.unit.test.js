@@ -104,7 +104,7 @@ describe('getSingleEstablishment', () => {
       await establishmentsController.getSingleEstablishment(req, res, next);
       expect(establishmentHandler.findEstablishment).toHaveBeenCalledWith(_id);
       expect(res.status).toHaveBeenCalledWith(200);
-      expect(res.json).toHaveBeenCalledWith(exampleEstablishment);
+      expect(res.json).toHaveBeenCalledWith({...exampleEstablishment, spacesInfo});
     });
   });
 
