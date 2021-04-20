@@ -27,6 +27,7 @@ let spaceSchema = mongoose.Schema({
   },
   n95Mandatory: {
     type: Boolean,
+    default: false,
     required: true
   }
 });

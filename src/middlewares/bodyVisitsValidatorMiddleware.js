@@ -2,7 +2,7 @@ const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyVisitsValidatorMiddleware() {
   const addValidations = [
-    body(['userGeneratedCode', 'scanCode', 'timestamp', 'vaccinated', 'covidRecovered'], 'Missing value').exists(),
+    body(['userGeneratedCode', 'scanCode', 'timestamp'], 'Missing value').exists(),
   ];
 
   const validate = (req, res, next) => {
