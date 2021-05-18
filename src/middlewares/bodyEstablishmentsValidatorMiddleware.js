@@ -8,6 +8,9 @@ module.exports = function bodyEstablishmentsValidatorMiddleware() {
   const updateValidations = [
     body(['_id'], 'Invalid values').not().exists()
   ];
+  const addSingleSpaceValidations = [
+    body(['name', 'm2', 'estimatedVisitDuration', 'hasExit', 'openPlace', 'establishmentId'], 'Missing value').exists(),
+  ];
 
   const validate = (req, res, next) => {
     const errors = validationResult(req);
@@ -22,6 +25,7 @@ module.exports = function bodyEstablishmentsValidatorMiddleware() {
   return {
     addValidations,
     updateValidations,
+    addSingleSpaceValidations,
     validate
   };
 };

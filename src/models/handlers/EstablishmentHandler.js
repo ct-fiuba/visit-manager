@@ -49,6 +49,25 @@ module.exports = function EstablishmentHandler() {
     return newEstablishment.save();
   };
 
+  const addSingleSpaceToEstablishment = async (content) => {
+    let establishment = await Establishment.findOne({ _id: content.establishmentId });
+
+    let space = {
+      _id: new mongoose.Types.ObjectId(),
+      name: content.name,
+      m2: content.m2,
+      estimatedVisitDuration: content.estimatedVisitDuration,
+      hasExit: content.hasExit,
+      openPlace: content.openPlace,
+      establishmentId: content.establishmentId,
+      n95Mandatory: content.n95Mandatory
+    };
+
+    establishment['spaces'].push(space._id);
+    establishment.save();
+    return await SpaceHandler().addSpace(space);
+  };
+
   const updateEstablishment = async (establishmentId, content) => {
     let modifiedEstablishment = Establishment.updateOne({ _id: establishmentId }, content);
     return modifiedEstablishment;
@@ -79,6 +98,7 @@ module.exports = function EstablishmentHandler() {
     findEstablishment,
     establishmentExists,
     addEstablishment,
+    addSingleSpaceToEstablishment,
     updateEstablishment,
     deleteEstablishment,
     getPDFData

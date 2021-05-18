@@ -58,6 +58,19 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
       .catch(err => errorDB(res, err));
   };
 
+  const addSingleSpace = async (req, res, next) => {
+    return establishmentHandler.findEstablishment(req.body.establishmentId)
+      .then(establishment => {
+        if (!establishment) {
+          return res.status(409).json({ reason: 'Establishment does not exist' });
+        }
+       return establishmentHandler.addSingleSpaceToEstablishment(req.body)
+          .then(space => res.status(201).json(space))
+          .catch(err => errorDB(res, err));
+      })
+      .catch(err => errorDB(res, err));
+  };
+
   const update = async (req, res, next) => {
     establishmentId = req.params.establishmentId;
     try {
@@ -84,6 +97,7 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
 
   return {
     add,
+    addSingleSpace,
     get,
     getSingleEstablishment,
     update,

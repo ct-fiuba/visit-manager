@@ -47,6 +47,14 @@ let spaces2 = [
       n95Mandatory: false
     }
   ];
+let space3 = {
+  name: "Tercer piso",
+  hasExit: false,
+  m2: 300,
+  estimatedVisitDuration: 15,
+  openPlace: false,
+  n95Mandatory: false
+}
 
 describe('App test', () => {
   beforeAll(async () => {
@@ -90,6 +98,7 @@ describe('App test', () => {
 
     let establishment_id1;
     let establishment_id2;
+    let space3_id;
 
     describe('add first establishments', () => {
       test('should return 201', async () => {
@@ -114,6 +123,40 @@ describe('App test', () => {
         await request(server).get('/establishments').then(res => {
           expect(res.status).toBe(200);
           expect(res.body).toHaveLength(2);
+        });
+      });
+    });
+
+    describe('add second space to establishment', () => {
+      test('should return all establishments', async () => {
+        await request(server).post('/establishments/space').send({...space3, establishmentId: establishment_id2}).then(res => {
+          expect(res.status).toBe(201);
+          expect(res.body.establishmentId).toBe(establishment_id2);
+          expect(res.body.name).toBe(space3.name);
+          expect(res.body.hasExit).toBe(space3.hasExit);
+          expect(res.body.m2).toBe(space3.m2);
+          expect(res.body.estimatedVisitDuration).toBe(space3.estimatedVisitDuration);
+          expect(res.body.openPlace).toBe(space3.openPlace);
+          expect(res.body.n95Mandatory).toBe(space3.n95Mandatory);
+          space3_id = res.body._id;
+        });
+      });
+    });
+
+    describe('get establishments', () => {
+      test('should still return two establishments', async () => {
+        await request(server).get('/establishments').then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveLength(2);
+        });
+      });
+    });
+
+    describe('get establishment', () => {
+      test('should still return two establishments', async () => {
+        await request(server).get(`/establishments/${establishment_id2}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.spaces).toHaveLength(2);
         });
       });
     });

@@ -11,6 +11,7 @@ module.exports = function establishmentsRouter() {
     express.Router()
       .get('/', establishmentsController.get)
       .post('/', bodyEstablishmentsValidator.addValidations, bodyEstablishmentsValidator.validate, establishmentsController.add)
+      .post('/space', bodyEstablishmentsValidator.addSingleSpaceValidations, bodyEstablishmentsValidator.validate, establishmentsController.addSingleSpace)
       .get('/:establishmentId', establishmentsController.getSingleEstablishment)
       .get('/PDF/:establishmentId', establishmentsController.getEstablishmentPDF)
       .put('/:establishmentId', bodyEstablishmentsValidator.updateValidations, bodyEstablishmentsValidator.validate, establishmentsController.update)
