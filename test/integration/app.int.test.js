@@ -186,8 +186,16 @@ describe('App test', () => {
     });
 
     describe('get PDF file', () => {
-      test('should get a PDF document in the response', async () => {
+      test('should get a PDF document from establishment in the response', async () => {
         await request(server).get(`/establishments/PDF/${establishment_id1}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.header['content-type']).toBe('application/pdf');
+          expect(res.header['content-disposition']).toContain('attachment');
+        });
+      });
+
+      test('should get a PDF document from space in the response', async () => {
+        await request(server).get(`/establishments/PDF/${establishment_id1}/space/${spaces1_ids[0]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.header['content-type']).toBe('application/pdf');
           expect(res.header['content-disposition']).toContain('attachment');

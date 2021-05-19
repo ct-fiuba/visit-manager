@@ -14,6 +14,7 @@ module.exports = function establishmentsRouter() {
       .post('/space', bodyEstablishmentsValidator.addSingleSpaceValidations, bodyEstablishmentsValidator.validate, establishmentsController.addSingleSpace)
       .get('/:establishmentId', establishmentsController.getSingleEstablishment)
       .get('/PDF/:establishmentId', establishmentsController.getEstablishmentPDF)
+      .get('/PDF/:establishmentId/space/:spaceId', establishmentsController.getSingleSpacePDF)
       .put('/:establishmentId', bodyEstablishmentsValidator.updateValidations, bodyEstablishmentsValidator.validate, establishmentsController.update)
       .put('/space/:spaceId', bodyEstablishmentsValidator.updateSpaceValidations, bodyEstablishmentsValidator.validate, establishmentsController.updateSpace)
       .delete('/:establishmentId', establishmentsController.remove)

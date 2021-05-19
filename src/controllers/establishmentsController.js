@@ -45,6 +45,30 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
     }
   };
 
+  const getSingleSpacePDF = async (req, res, next) => {
+    spaceId = req.params.spaceId;
+    establishmentId = req.params.establishmentId;
+    return establishmentHandler.findEstablishment(establishmentId)
+      .then(async (establishment) => {
+        if (!establishment) {
+          return res.status(404).json({ reason: 'Establishment does not exist' });
+        }
+        if (!establishment.spaces.includes(spaceId)) {
+          return res.status(404).json({ reason: 'Establishment is not the owner of the given space id' });
+        }
+        let PDFData = await establishmentHandler.getPDFDataForSingleSpace(spaceId);
+        if (!PDFData) {
+          return res.status(404).json({ reason: 'Space not found' });
+        }
+        res.writeHead(200, {
+          'Content-Type': 'application/pdf',
+          'Content-Disposition': 'attachment; filename=QRs.pdf'
+        });
+        return await PDFGenerator().generatePDF(res, PDFData);
+      })
+      .catch(err => errorDB(res, err));
+  };
+
   const add = async (req, res, next) => {
     return establishmentHandler.establishmentExists(req.body)
       .then(establishment => {
@@ -121,6 +145,7 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
     update,
     updateSpace,
     remove,
-    getEstablishmentPDF
+    getEstablishmentPDF,
+    getSingleSpacePDF
   };
 };
