@@ -1,4 +1,4 @@
-module.exports = function establishmentsController(establishmentHandler) {
+module.exports = function establishmentsController(establishmentHandler, spaceHandler) {
   const PDFGenerator = require('../services/PDFGenerator');
 
   const errorDB = (res, err) => {
@@ -17,7 +17,13 @@ module.exports = function establishmentsController(establishmentHandler) {
     return establishmentHandler.findEstablishment(req.params.establishmentId)
       .then(establishment => {
         if (!establishment) return res.status(404).json({ reason: 'Establishment not found' });
-        return res.status(200).json(establishment);
+        return spaceHandler.findSpaces({
+          '_id': { $in: establishment.spaces}
+        }).then(docs => {
+          let extendedEstablishment = JSON.parse(JSON.stringify(establishment));
+          extendedEstablishment["spacesInfo"] = docs;
+          res.status(200).json(extendedEstablishment);
+        }).catch(err => errorDB(res, err));
       })
       .catch(err => errorDB(res, err));
   };

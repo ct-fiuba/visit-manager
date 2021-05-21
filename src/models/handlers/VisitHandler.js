@@ -31,7 +31,12 @@ module.exports = function VisitHandler() {
       scanCode,
       isExitScan,
       userGeneratedCode: content.userGeneratedCode,
-      timestamp: content.timestamp
+      timestamp: content.timestamp,
+      vaccinated: content.vaccinated,
+      vaccineReceived: content.vaccineReceived,
+      vaccinatedDate: content.vaccinatedDate,
+      covidRecovered: content.covidRecovered,
+      covidRecoveredDate: content.covidRecoveredDate
     };
 
     let newVisit = new Visit(visitData);
