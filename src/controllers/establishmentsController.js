@@ -13,6 +13,12 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
       .catch(err => errorDB(res, err));
   };
 
+  const getEstablishmentsByOwner = async (req, res, next) => {
+    return establishmentHandler.findEstablishmentsByOwner(req.params.ownerId)
+      .then(establishments => res.status(200).json(establishments))
+      .catch(err => errorDB(res, err));
+  };
+
   const getSingleEstablishment = async (req, res, next) => {
     return establishmentHandler.findEstablishment(req.params.establishmentId)
       .then(establishment => {
@@ -141,6 +147,7 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
     add,
     addSingleSpace,
     get,
+    getEstablishmentsByOwner,
     getSingleEstablishment,
     update,
     updateSpace,

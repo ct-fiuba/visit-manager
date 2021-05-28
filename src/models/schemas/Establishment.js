@@ -9,10 +9,6 @@ let establishmentSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  email: {
-    type: String,
-    required: true
-  },
   address: {
     type: String,
     required: true
@@ -32,6 +28,10 @@ let establishmentSchema = mongoose.Schema({
   country: {
     type: String,
     required: true
+  },
+  ownerId: {
+    type: String,
+    required: false
   },
   spaces: [mongoose.Schema.Types.ObjectId]
 });

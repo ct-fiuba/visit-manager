@@ -252,6 +252,41 @@
         }
       }
     },
+    "/establishments/owner/{ownerId}": {
+      "get": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Get establishments by owner id",
+        "description": "",
+        "operationId": "getEstablishmentsByOwnerId",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pathOwnerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Establishment registered in Visit Manager",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Establishment"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Establishment not found"
+          }
+        }
+      }
+    },
     "/establishments/PDF/{establishmentId}": {
       "get": {
         "tags": [
@@ -461,6 +496,14 @@
             "type": "integer",
             "minimum": 1
           }
+        },
+        "pathOwnerId": {
+          "in": "path",
+          "name": "ownerId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
         }
     },
     "schemas": {
@@ -478,10 +521,6 @@
           "name": {
             "type": "string",
             "example": "Mc Donalds"
-          },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
           },
           "address": {
             "type": "string",
@@ -502,6 +541,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           },
           "QRs": {
             "type": "array",
@@ -542,7 +585,6 @@
         "required": [
           "type",
           "name",
-          "email",
           "address",
           "city",
           "state",
@@ -558,10 +600,6 @@
           "name": {
             "type": "string",
             "example": "Mc Donalds"
-          },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
           },
           "address": {
             "type": "string",
@@ -582,6 +620,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           },
           "QRs": {
             "type": "array",
@@ -624,10 +666,6 @@
             "type": "string",
             "example": "Mc Donalds"
           },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
-          },
           "address": {
             "type": "string",
             "example": "Cabildo 1010"
@@ -647,6 +685,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           }
         }
       },

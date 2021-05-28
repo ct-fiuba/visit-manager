@@ -13,6 +13,7 @@ module.exports = function establishmentsRouter() {
       .post('/', bodyEstablishmentsValidator.addValidations, bodyEstablishmentsValidator.validate, establishmentsController.add)
       .post('/space', bodyEstablishmentsValidator.addSingleSpaceValidations, bodyEstablishmentsValidator.validate, establishmentsController.addSingleSpace)
       .get('/:establishmentId', establishmentsController.getSingleEstablishment)
+      .get('/owner/:ownerId', establishmentsController.getEstablishmentsByOwner)
       .get('/PDF/:establishmentId', establishmentsController.getEstablishmentPDF)
       .get('/PDF/:establishmentId/space/:spaceId', establishmentsController.getSingleSpacePDF)
       .put('/:establishmentId', bodyEstablishmentsValidator.updateValidations, bodyEstablishmentsValidator.validate, establishmentsController.update)

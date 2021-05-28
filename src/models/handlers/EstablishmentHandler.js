@@ -7,6 +7,10 @@ module.exports = function EstablishmentHandler() {
     return Establishment.find(query);
   };
 
+  const findEstablishmentsByOwner = async (ownerId) => {
+    return Establishment.find({ ownerId: ownerId });
+  };
+
   const findEstablishment = async (establishmentId) => {
     return Establishment.findOne({ _id: establishmentId });
   };
@@ -20,12 +24,12 @@ module.exports = function EstablishmentHandler() {
       _id: new mongoose.Types.ObjectId(),
       type: content.type,
       name: content.name,
-      email: content.email,
       address: content.address,
       city: content.city,
       state: content.state,
       zip: content.zip,
-      country: content.country
+      country: content.country,
+      ownerId: content.ownerId
     };
 
     let SpaceIds = [];
@@ -107,6 +111,7 @@ module.exports = function EstablishmentHandler() {
 
   return {
     findEstablishments,
+    findEstablishmentsByOwner,
     findEstablishment,
     establishmentExists,
     addEstablishment,

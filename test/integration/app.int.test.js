@@ -8,7 +8,6 @@ let server;
 
 let type1 = 'restaurant';
 let name1 = 'Mc Donalds';
-let email1 = 'mcdonalds@gmail.com';
 let address1 = 'Cabildo 1010';
 let city = 'CABA';
 let state = 'CABA';
@@ -35,7 +34,6 @@ let spaces1 = [
 
 let type2 = 'supermarket';
 let name2 = 'Coto';
-let email2 = 'coto@gmail.com';
 let address2 = 'Cabildo 2020';
 let spaces2 = [
     {
@@ -76,7 +74,6 @@ describe('App test', () => {
     const correctEstablishment1 = {
       type: type1,
       name: name1,
-      email: email1,
       address: address1,
       city,
       state,
@@ -87,7 +84,6 @@ describe('App test', () => {
     const correctEstablishment2 = {
       type: type2,
       name: name2,
-      email: email2,
       address: address2,
       city,
       state,
@@ -264,7 +260,6 @@ describe('App test', () => {
     const establishment = {
       type: type1,
       name: name1,
-      email: email1,
       address: address1,
       city,
       state,

@@ -2,7 +2,7 @@ const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyEstablishmentsValidatorMiddleware() {
   const addValidations = [
-    body(['type', 'name', 'email', 'address', 'city', 'state', 'zip', 'country', 'spaces'], 'Missing value').exists(),
+    body(['type', 'name', 'address', 'city', 'state', 'zip', 'country', 'spaces'], 'Missing value').exists(),
     body(['spaces']).not().isEmpty()
   ];
   const updateValidations = [
