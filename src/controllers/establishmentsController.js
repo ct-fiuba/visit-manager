@@ -14,9 +14,19 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
   };
 
   const getEstablishmentsByOwner = async (req, res, next) => {
-    return establishmentHandler.findEstablishmentsByOwner(req.params.ownerId)
-      .then(establishments => res.status(200).json(establishments))
-      .catch(err => errorDB(res, err));
+    let response = [];
+    let establishments = await establishmentHandler.findEstablishmentsByOwner(req.params.ownerId);
+    if (!establishments) {
+      return res.status(404).json({ reason: 'Owner not found' });
+    }
+    for (let establishment of establishments) {
+      let current_establishment = JSON.parse(JSON.stringify(establishment));
+      current_establishment['spacesInfo'] = await spaceHandler.findSpaces({
+        '_id': { $in: establishment.spaces }
+      })
+      response.push(current_establishment);
+    }
+    return res.status(200).json(response);
   };
 
   const getSingleEstablishment = async (req, res, next) => {
