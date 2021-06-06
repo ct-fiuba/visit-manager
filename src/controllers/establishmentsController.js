@@ -48,14 +48,14 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
     establishmentId = req.params.establishmentId;
     try {
       let PDFData = await establishmentHandler.getPDFData(establishmentId);
-      if (!PDFData) {
+      if (!PDFData || !PDFData.PDFInfo) {
         return res.status(404).json({ reason: 'Establishment not found' });
       }
       res.writeHead(200, {
         'Content-Type': 'application/pdf',
-        'Content-Disposition': 'attachment; filename=QRs.pdf'
+        'Content-Disposition': `attachment; filename=${PDFData.filename}`
       });
-      return await PDFGenerator().generatePDF(res, PDFData);
+      return await PDFGenerator().generatePDF(res, PDFData.PDFInfo);
     } catch (err) {
       errorDB(res, err);
     }
@@ -72,15 +72,15 @@ module.exports = function establishmentsController(establishmentHandler, spaceHa
         if (!establishment.spaces.includes(spaceId)) {
           return res.status(404).json({ reason: 'Establishment is not the owner of the given space id' });
         }
-        let PDFData = await establishmentHandler.getPDFDataForSingleSpace(spaceId);
-        if (!PDFData) {
+        let PDFData = await establishmentHandler.getPDFDataForSingleSpace(establishment.name, spaceId);
+        if (!PDFData || !PDFData.PDFInfo) {
           return res.status(404).json({ reason: 'Space not found' });
         }
         res.writeHead(200, {
           'Content-Type': 'application/pdf',
-          'Content-Disposition': 'attachment; filename=QRs.pdf'
+          'Content-Disposition': `attachment; filename=${PDFData.filename}`
         });
-        return await PDFGenerator().generatePDF(res, PDFData);
+        return await PDFGenerator().generatePDF(res, PDFData.PDFInfo);
       })
       .catch(err => errorDB(res, err));
   };

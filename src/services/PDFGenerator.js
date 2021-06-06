@@ -34,7 +34,7 @@ module.exports = function PDFGenerator() {
       let tmpQRFile = path.join(__dirname, "tmp/tmp" + counter + ".png");
       doc.addPage();
       // Embed a font, set the font size, and render some text
-      doc.fontSize(50)
+      doc.fontSize(24)
         .text(element[0], 100, 100, {align: 'center'});
 
       await generateQRCode(tmpQRFile, element[1]);

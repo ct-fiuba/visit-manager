@@ -6,7 +6,7 @@ module.exports = function bodyEstablishmentsValidatorMiddleware() {
     body(['spaces']).not().isEmpty()
   ];
   const updateValidations = [
-    body(['_id'], 'Invalid values').not().exists()
+    body(['_id'], 'Missing value').exists()
   ];
   const addSingleSpaceValidations = [
     body(['name', 'm2', 'estimatedVisitDuration', 'hasExit', 'openPlace', 'establishmentId'], 'Missing value').exists(),
