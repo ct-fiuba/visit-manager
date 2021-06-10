@@ -87,8 +87,8 @@ module.exports = function EstablishmentHandler() {
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
       if (current_space.hasExit) {
-        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} Entrada`, space_id.toString()]);
-        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} Salida`, `${space_id.toString()}_exit`]);
+        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} (Entrada)`, space_id.toString()]);
+        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} (Salida)`, `${space_id.toString()}_exit`]);
       } else {
         PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name}`, space_id.toString()]);
       }
@@ -101,8 +101,8 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     let current_space = await SpaceHandler().findSpace(space_id);
     if (current_space.hasExit) {
-      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} Entrada`, space_id.toString()]);
-      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} Salida`, `${space_id.toString()}_exit`]);
+      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} (Entrada)`, space_id.toString()]);
+      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} (Salida)`, `${space_id.toString()}_exit`]);
     } else {
       PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name}`, space_id.toString()]);
     }
