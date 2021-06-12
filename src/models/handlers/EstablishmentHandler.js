@@ -93,7 +93,7 @@ module.exports = function EstablishmentHandler() {
         PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name}`, space_id.toString()]);
       }
     }
-    let PDFData = { filename: `CT_QR_${establishment.name}`, PDFInfo };
+    let PDFData = { filename: `CT_QR_${establishment.name}.pdf`, PDFInfo };
     return PDFData;
   };
 
@@ -106,7 +106,7 @@ module.exports = function EstablishmentHandler() {
     } else {
       PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name}`, space_id.toString()]);
     }
-    let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}`, PDFInfo };
+    let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}.pdf`, PDFInfo };
     return PDFData;
   };
 
