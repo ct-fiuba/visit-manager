@@ -58,7 +58,7 @@ module.exports = function PDFGenerator() {
 
         // Add an image, constrain it to a given size, and center it vertically and horizontally
         doc.image(tmpQRFile, {
-          fit: [350, 350],
+          fit: [440, 350],
           align: 'center',
           valign: 'center'
         });
