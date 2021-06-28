@@ -8,6 +8,7 @@ RUN npm install
 
 COPY main.js .
 COPY src/ src/
+COPY images/ images/
 
 EXPOSE 5005
 

@@ -15,6 +15,9 @@ module.exports = function visitsService(visitHandler) {
             if (!space) {
               return res.status(404).json({ reason: 'Space linked to the scan code not found' });
             }
+            if (!space.enabled) {
+              return res.status(404).json({ reason: 'Space linked to the scan code is disabled' });
+            }
             return visitHandler.addVisit(req.body)
               .then(visit => res.status(201).json({ _id: visit._id }))
               .catch(err => errorDB(res, err));

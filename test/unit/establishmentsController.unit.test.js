@@ -7,7 +7,6 @@ let next;
 let _id = 1;
 let type = 'restaurant';
 let name = 'Mc Donalds';
-let email = 'mcdonalds@gmail.com';
 let address = 'Cabildo 1010';
 let city = 'CABA';
 let state = 'CABA';
@@ -67,7 +66,6 @@ const exampleEstablishment = {
   _id,
   type,
   name,
-  email,
   address,
   city,
   state,
