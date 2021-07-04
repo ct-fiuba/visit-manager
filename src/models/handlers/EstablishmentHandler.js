@@ -64,10 +64,10 @@ module.exports = function EstablishmentHandler() {
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
       if (current_space.hasExit) {
-        PDFInfo.push([`${current_space.name} Entrada`, space_id.toString()]);
-        PDFInfo.push([`${current_space.name} Salida`, `${space_id.toString()}_exit`]);
+        PDFInfo.push({name: `${current_space.name} Entrada`, id: space_id.toString(), isExit: false});
+        PDFInfo.push({name: `${current_space.name} Salida`, id: space_id.toString(), isExit: true});
       } else {
-        PDFInfo.push([current_space.name, space_id.toString()]);
+        PDFInfo.push({name: current_space.name, id: space_id.toString()});
       }
     }
     return PDFInfo;

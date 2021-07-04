@@ -35,9 +35,9 @@ module.exports = function PDFGenerator() {
       doc.addPage();
       // Embed a font, set the font size, and render some text
       doc.fontSize(50)
-        .text(element[0], 100, 100, {align: 'center'});
+        .text(element.name, 100, 100, {align: 'center'});
 
-      await generateQRCode(tmpQRFile, element[1]);
+      await generateQRCode(tmpQRFile, JSON.stringify(element));
 
       // Add an image, constrain it to a given size, and center it vertically and horizontally
       doc.image(tmpQRFile, {

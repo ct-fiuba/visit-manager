@@ -11,8 +11,8 @@ const pathQR = path.join(__dirname, "testFiles/qr1.png");
 const pathPDF = path.join(__dirname, "testFiles/pdfGenerated.pdf");
 
 const QRsInfo = [
-  [title1, code1],
-  [title2, code2],
+  {name: title1, id: code1 },
+  {name: title2, id: code2 },
 ]
 
 beforeAll(async () => {
@@ -29,7 +29,7 @@ afterAll(async () => {
 
 describe('PDF generator', () => {
   test('should generate a QR code', async () => {
-    await PDFGenerator().generateQRCode(pathQR, code1);
+    await PDFGenerator().generateQRCode(pathQR, JSON.stringify(QRsInfo[0]));
     expect(fs.existsSync(pathQR)).toBeTruthy();
     PDFGenerator().deleteFile(pathQR);
     expect(fs.existsSync(pathQR)).toBeFalsy();
