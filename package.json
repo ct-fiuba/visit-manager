@@ -25,7 +25,6 @@
   },
   "devDependencies": {
     "jest": "^26.1.0",
-    "mongodb-memory-server": "^6.6.3",
     "prettier": "2.0.5",
     "supertest": "^4.0.2"
   },
