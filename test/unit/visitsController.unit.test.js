@@ -34,7 +34,7 @@ const exampleVisit = {
   _id,
   scanCode,
   userGeneratedCode,
-  timestamp
+  timestamp,
 };
 
 describe('get', () => {
@@ -64,7 +64,8 @@ describe('add', () => {
         m2: "1000",
         estimatedVisitDuration: "60",
         openPlace: false,
-        n95Mandatory: false
+        n95Mandatory: false,
+        enabled: true
       });
       visitHandler.addVisit.mockResolvedValue(exampleVisit);
     });

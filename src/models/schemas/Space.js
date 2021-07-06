@@ -29,6 +29,11 @@ let spaceSchema = mongoose.Schema({
     type: Boolean,
     default: false,
     required: true
+  },
+  enabled: {
+    type: Boolean,
+    default: true,
+    required: true
   }
 });
 

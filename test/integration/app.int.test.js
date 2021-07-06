@@ -8,7 +8,6 @@ let server;
 
 let type1 = 'restaurant';
 let name1 = 'Mc Donalds';
-let email1 = 'mcdonalds@gmail.com';
 let address1 = 'Cabildo 1010';
 let city = 'CABA';
 let state = 'CABA';
@@ -35,7 +34,6 @@ let spaces1 = [
 
 let type2 = 'supermarket';
 let name2 = 'Coto';
-let email2 = 'coto@gmail.com';
 let address2 = 'Cabildo 2020';
 let spaces2 = [
     {
@@ -47,6 +45,14 @@ let spaces2 = [
       n95Mandatory: false
     }
   ];
+let space3 = {
+  name: "Tercer piso",
+  hasExit: false,
+  m2: 300,
+  estimatedVisitDuration: 15,
+  openPlace: false,
+  n95Mandatory: false
+}
 
 describe('App test', () => {
   beforeAll(async () => {
@@ -68,7 +74,6 @@ describe('App test', () => {
     const correctEstablishment1 = {
       type: type1,
       name: name1,
-      email: email1,
       address: address1,
       city,
       state,
@@ -79,7 +84,6 @@ describe('App test', () => {
     const correctEstablishment2 = {
       type: type2,
       name: name2,
-      email: email2,
       address: address2,
       city,
       state,
@@ -90,12 +94,16 @@ describe('App test', () => {
 
     let establishment_id1;
     let establishment_id2;
+    let spaces1_ids;
+    let spaces2_ids;
+    let space3_id;
 
     describe('add first establishments', () => {
       test('should return 201', async () => {
         await request(server).post('/establishments').send(correctEstablishment1).then(res => {
           expect(res.status).toBe(201);
           establishment_id1 = res.body._id;
+          spaces1_ids = res.body.spaces;
         });
       });
     });
@@ -105,6 +113,7 @@ describe('App test', () => {
         await request(server).post('/establishments').send(correctEstablishment2).then(res => {
           expect(res.status).toBe(201);
           establishment_id2 = res.body._id;
+          spaces2_ids = res.body.spaces;
         });
       });
     });
@@ -114,6 +123,40 @@ describe('App test', () => {
         await request(server).get('/establishments').then(res => {
           expect(res.status).toBe(200);
           expect(res.body).toHaveLength(2);
+        });
+      });
+    });
+
+    describe('add second space to establishment', () => {
+      test('should return all establishments', async () => {
+        await request(server).post('/establishments/space').send({...space3, establishmentId: establishment_id2}).then(res => {
+          expect(res.status).toBe(201);
+          expect(res.body.establishmentId).toBe(establishment_id2);
+          expect(res.body.name).toBe(space3.name);
+          expect(res.body.hasExit).toBe(space3.hasExit);
+          expect(res.body.m2).toBe(space3.m2);
+          expect(res.body.estimatedVisitDuration).toBe(space3.estimatedVisitDuration);
+          expect(res.body.openPlace).toBe(space3.openPlace);
+          expect(res.body.n95Mandatory).toBe(space3.n95Mandatory);
+          space3_id = space3._id;
+        });
+      });
+    });
+
+    describe('get establishments', () => {
+      test('should still return two establishments', async () => {
+        await request(server).get('/establishments').then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body).toHaveLength(2);
+        });
+      });
+    });
+
+    describe('get establishment', () => {
+      test('should still return two establishments', async () => {
+        await request(server).get(`/establishments/${establishment_id2}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.spaces).toHaveLength(2);
         });
       });
     });
@@ -139,11 +182,75 @@ describe('App test', () => {
     });
 
     describe('get PDF file', () => {
-      test('should get a PDF document in the response', async () => {
+      test('should get a PDF document from establishment in the response', async () => {
         await request(server).get(`/establishments/PDF/${establishment_id1}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.header['content-type']).toBe('application/pdf');
           expect(res.header['content-disposition']).toContain('attachment');
+        });
+      });
+
+      test('should get a PDF document from space in the response', async () => {
+        await request(server).get(`/establishments/PDF/${establishment_id1}/space/${spaces1_ids[0]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.header['content-type']).toBe('application/pdf');
+          expect(res.header['content-disposition']).toContain('attachment');
+        });
+      });
+    });
+
+    describe('disable space', () => {
+      test('disable space from corresponding establishment should return 201', async () => {
+        const spaceUpdateBody = {
+          establishmentId: establishment_id1,
+          enabled: false,
+        };
+        await request(server).put(`/establishments/space/${spaces1_ids[0]}`).send(spaceUpdateBody).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('disabled space should return enabled: false', async () => {
+        await request(server).get(`/establishments/${establishment_id1}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(1);
+        });
+      });
+
+      test('disable space from wrong establishment should return 404', async () => {
+        const spaceUpdateBody = {
+          establishmentId: establishment_id2,
+          enabled: false,
+        };
+        await request(server).put(`/establishments/space/${spaces1_ids[1]}`).send(spaceUpdateBody).then(res => {
+          expect(res.status).toBe(404);
+        });
+      });
+
+      test('disable non existent space return 404', async () => {
+        const spaceUpdateBody = {
+          establishmentId: establishment_id2,
+          enabled: false,
+        };
+        await request(server).put(`/establishments/space/${establishment_id1}`).send(spaceUpdateBody).then(res => {
+          expect(res.status).toBe(404);
+        });
+      });
+
+      test('enable previously disabled space should return 201', async () => {
+        const spaceUpdateBody = {
+          establishmentId: establishment_id1,
+          enabled: true,
+        };
+        await request(server).put(`/establishments/space/${spaces1_ids[0]}`).send(spaceUpdateBody).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('enabled previously disabled space should return enabled: true', async () => {
+        await request(server).get(`/establishments/${establishment_id1}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(2);
         });
       });
     });
@@ -153,7 +260,6 @@ describe('App test', () => {
     const establishment = {
       type: type1,
       name: name1,
-      email: email1,
       address: address1,
       city,
       state,
@@ -276,6 +382,24 @@ describe('App test', () => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(1);
           expect(res.body[0].isExitScan).toBeTruthy();
+        });
+      });
+
+      test('add visit to disabled space should return 404', async () => {
+        const spaceUpdateBody = {
+          establishmentId: establishment_id1,
+          enabled: false,
+        };
+        await request(server).put(`/establishments/space/${spaces1_id[0]}`).send(spaceUpdateBody);
+        const visit = {
+          scanCode: `${spaces1_id[0]}`,
+          userGeneratedCode: "POIQULNVOZZ",
+          timestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
+        };
+        await request(server).post('/visits').send(visit).then(res => {
+          expect(res.status).toBe(404);
         });
       });
     });
