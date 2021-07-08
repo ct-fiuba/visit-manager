@@ -36,7 +36,7 @@
           }
         },
         "responses": {
-          "200": {
+          "201": {
             "description": "Establishment registered successfully",
             "content": {
               "application/json": {
@@ -95,6 +95,54 @@
           }
         }
       }
+    }, 
+    "/establishments/space": {
+      "post": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Register new space",
+        "operationId": "registerSpace",
+        "requestBody": {
+          "description": "Created space object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/SpaceNew"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Space registered successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SpaceNewResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields / Invalid visibility"
+          },
+          "409": {
+            "description": "Space already registered"
+          }
+        }
+      }
     },
     "/establishments/{establishmentId}": {
       "get": {
@@ -134,7 +182,7 @@
         "tags": [
           "establishments"
         ],
-        "summary": "Delete Establishment by id",
+        "summary": "Update Establishment by id",
         "description": "",
         "operationId": "editEstablishment",
         "parameters": [
@@ -197,6 +245,150 @@
         "responses": {
           "204": {
             "description": "Establishment deleted successfully"
+          },
+          "404": {
+            "description": "Establishment not found"
+          }
+        }
+      }
+    },
+    "/establishments/owner/{ownerId}": {
+      "get": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Get establishments by owner id",
+        "description": "",
+        "operationId": "getEstablishmentsByOwnerId",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pathOwnerId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Establishment registered in Visit Manager",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/Establishment"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Establishment not found"
+          }
+        }
+      }
+    },
+    "/establishments/PDF/{establishmentId}": {
+      "get": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Get establishment PDF",
+        "description": "Get establishment PDF",
+        "operationId": "getEstablishmentPDF",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pathEstablishmentId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Establishment PDF generated",
+            "content": {
+              "application/pdf": {}
+            }
+          },
+          "404": {
+            "description": "Establishment not found"
+          }
+        }
+      }
+    },
+    "/establishments/PDF/{establishmentId}/space/{spaceId}": {
+      "get": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Get single space PDF",
+        "description": "Get single space PDF",
+        "operationId": "getSingleSpacePDF",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pathEstablishmentId"
+          },
+          {
+            "$ref": "#/components/parameters/pathSpaceId"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Space PDF generated",
+            "content": {
+              "application/pdf": {}
+            }
+          },
+          "404": {
+            "description": "Space not found"
+          }
+        }
+      }
+    },
+    "/establishments/space/{spaceId}": {
+      "put": {
+        "tags": [
+          "establishments"
+        ],
+        "summary": "Update Space by id",
+        "description": "",
+        "operationId": "editSpace",
+        "parameters": [
+          {
+            "$ref": "#/components/parameters/pathSpaceId"
+          }
+        ],
+        "requestBody": {
+          "description": "Edit Space object",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/EditSpace"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Establishment edited successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "allOf": [
+                    {
+                      "$ref": "#/components/schemas/SpaceNewResponse"
+                    }
+                  ]
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid fields / Invalid visibility"
           },
           "404": {
             "description": "Establishment not found"
@@ -287,15 +479,32 @@
   },
   "components": {
     "parameters": {
-      "pathEstablishmentId": {
-        "in": "path",
-        "name": "establishmentId",
-        "required": true,
-        "schema": {
-          "type": "integer",
-          "minimum": 1
+        "pathEstablishmentId": {
+          "in": "path",
+          "name": "establishmentId",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "pathSpaceId": {
+          "in": "path",
+          "name": "spaceId",
+          "required": true,
+          "schema": {
+            "type": "integer",
+            "minimum": 1
+          }
+        },
+        "pathOwnerId": {
+          "in": "path",
+          "name": "ownerId",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
         }
-      }
     },
     "schemas": {
       "Establishment": {
@@ -312,10 +521,6 @@
           "name": {
             "type": "string",
             "example": "Mc Donalds"
-          },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
           },
           "address": {
             "type": "string",
@@ -336,6 +541,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           },
           "QRs": {
             "type": "array",
@@ -376,7 +585,6 @@
         "required": [
           "type",
           "name",
-          "email",
           "address",
           "city",
           "state",
@@ -392,10 +600,6 @@
           "name": {
             "type": "string",
             "example": "Mc Donalds"
-          },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
           },
           "address": {
             "type": "string",
@@ -416,6 +620,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           },
           "QRs": {
             "type": "array",
@@ -458,10 +666,6 @@
             "type": "string",
             "example": "Mc Donalds"
           },
-          "email": {
-            "type": "string",
-            "example": "mcdonalds@gmail.com"
-          },
           "address": {
             "type": "string",
             "example": "Cabildo 1010"
@@ -481,6 +685,10 @@
           "country": {
             "type": "string",
             "example": "Argentina"
+          },
+          "ownerId": {
+            "type": "string",
+            "example": "jo1ius8df013bk13i09"
           }
         }
       },
@@ -502,12 +710,131 @@
             "example": "1PWIOEJPOVUP12OI34J"
           },
           "timestamp": {
-            "type": "datetime",
+            "type": "string",
             "example": "1970-01-01 00:00:01"
           },
           "genuxToken": {
             "type": "string",
             "example": "O1LENWFPO1H3N2ORNSDFV"
+          }
+        }
+      },
+      "SpaceNew": {
+        "type": "object",
+        "required": [
+          "name",
+          "m2",
+          "estimatedVisitDuration",
+          "hasExit",
+          "openPlace",
+          "establishmentId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Espacio 1"
+          },
+          "m2": {
+            "type": "integer",
+            "example": 15
+          },
+          "estimatedVisitDuration": {
+            "type": "integer",
+            "example": 30
+          },
+          "hasExit": {
+            "type": "boolean",
+            "example": false
+          },
+          "openPlace": {
+            "type": "boolean",
+            "example": true
+          },
+          "establishmentId": {
+            "type": "integer",
+            "example": 1
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
+          }
+        }
+      },
+      "SpaceNewResponse": {
+        "type": "object",
+        "required": [
+          "name",
+          "m2",
+          "estimatedVisitDuration",
+          "hasExit",
+          "openPlace",
+          "establishmentId",
+          "_id"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Espacio 1"
+          },
+          "m2": {
+            "type": "integer",
+            "example": 15
+          },
+          "estimatedVisitDuration": {
+            "type": "integer",
+            "example": 30
+          },
+          "hasExit": {
+            "type": "boolean",
+            "example": false
+          },
+          "openPlace": {
+            "type": "boolean",
+            "example": true
+          },
+          "establishmentId": {
+            "type": "integer",
+            "example": 1
+          },
+          "_id": {
+            "type": "integer",
+            "example": 444
+          }
+        }
+      },
+      "EditSpace": {
+        "type": "object",
+        "required": [
+          "establishmentId"
+        ],
+        "properties": {
+          "name": {
+            "type": "string",
+            "example": "Espacio 1"
+          },
+          "m2": {
+            "type": "integer",
+            "example": 15
+          },
+          "estimatedVisitDuration": {
+            "type": "integer",
+            "example": 30
+          },
+          "hasExit": {
+            "type": "boolean",
+            "example": false
+          },
+          "openPlace": {
+            "type": "boolean",
+            "example": true
+          },
+          "establishmentId": {
+            "type": "integer",
+            "example": 1
+          },
+          "enabled": {
+            "type": "boolean",
+            "example": true
           }
         }
       },
@@ -531,7 +858,7 @@
             "example": "1PWIOEJPOVUP12OI34J"
           },
           "timestamp": {
-            "type": "datetime",
+            "type": "string",
             "example": "1970-01-01 00:00:01"
           },
           "isExitScan": {
@@ -547,7 +874,7 @@
             "example": "Pfizer"
           },
           "vaccinatedDate": {
-            "type": "datetime",
+            "type": "string",
             "example": "1970-01-01 00:00:01"
           },
           "covidRecovered": {

@@ -2,11 +2,17 @@ const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyEstablishmentsValidatorMiddleware() {
   const addValidations = [
-    body(['type', 'name', 'email', 'address', 'city', 'state', 'zip', 'country', 'spaces'], 'Missing value').exists(),
+    body(['type', 'name', 'address', 'city', 'state', 'zip', 'country', 'spaces'], 'Missing value').exists(),
     body(['spaces']).not().isEmpty()
   ];
   const updateValidations = [
-    body(['_id'], 'Invalid values').not().exists()
+    body(['_id'], 'Missing value').exists()
+  ];
+  const addSingleSpaceValidations = [
+    body(['name', 'm2', 'estimatedVisitDuration', 'hasExit', 'openPlace', 'establishmentId'], 'Missing value').exists(),
+  ];
+  const updateSpaceValidations = [
+    body(['establishmentId'], 'Missing value').exists(),
   ];
 
   const validate = (req, res, next) => {
@@ -22,6 +28,8 @@ module.exports = function bodyEstablishmentsValidatorMiddleware() {
   return {
     addValidations,
     updateValidations,
+    addSingleSpaceValidations,
+    updateSpaceValidations,
     validate
   };
 };

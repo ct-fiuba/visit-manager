@@ -1,6 +1,11 @@
 const fs = require('fs');
 const path = require('path');
 const PDFGenerator = require('../../src/services/PDFGenerator');
+const util = require('util');
+
+const existsPromise = util.promisify(fs.exists);
+const mkdirPromise = util.promisify(fs.mkdir);
+const rmdirPromise = util.promisify(fs.rmdir);
 
 const code1 = "CodigoQRParaOli"
 const code2 = "CodigoQRParaNacho"
@@ -11,35 +16,40 @@ const pathQR = path.join(__dirname, "testFiles/qr1.png");
 const pathPDF = path.join(__dirname, "testFiles/pdfGenerated.pdf");
 
 const QRsInfo = [
-  {name: title1, id: code1 },
-  {name: title2, id: code2 },
+  {title: title1, code: {id: code1} },
+  {title: title2, code: {id: code2} },
 ]
 
 beforeAll(async () => {
-  if (!fs.existsSync(testFilesDirectory)){
-    fs.mkdirSync(testFilesDirectory);
+  if (!(await existsPromise(testFilesDirectory))) {
+    await mkdirPromise(testFilesDirectory);
   }
 });
 
 afterAll(async () => {
-  if (fs.existsSync(testFilesDirectory)){
-    fs.rmdirSync(testFilesDirectory);
+  if (await existsPromise(testFilesDirectory)) {
+    await new Promise(r => setTimeout(r, 1000));
+    await rmdirPromise(testFilesDirectory);
   }
 });
 
 describe('PDF generator', () => {
   test('should generate a QR code', async () => {
-    await PDFGenerator().generateQRCode(pathQR, JSON.stringify(QRsInfo[0]));
-    expect(fs.existsSync(pathQR)).toBeTruthy();
-    PDFGenerator().deleteFile(pathQR);
-    expect(fs.existsSync(pathQR)).toBeFalsy();
+    await PDFGenerator().generateQRCode(pathQR, code1);
+    let file_exists = await existsPromise(pathQR);
+    expect(file_exists).toBeTruthy();
+    await PDFGenerator().deleteFile(pathQR);
+    file_exists = await existsPromise(pathQR);
+    expect(file_exists).toBeFalsy();
   });
 
   test('should generate a PDF with the QR codes', async () => {
     const buf = fs.createWriteStream(pathPDF);
     await PDFGenerator().generatePDF(buf, QRsInfo);
-    expect(fs.existsSync(pathPDF)).toBeTruthy();
-    PDFGenerator().deleteFile(pathPDF);
-    expect(fs.existsSync(pathPDF)).toBeFalsy();
+    let file_exists = await existsPromise(pathPDF);
+    expect(file_exists).toBeTruthy();
+    await PDFGenerator().deleteFile(pathPDF);
+    file_exists = await existsPromise(pathPDF);
+    expect(file_exists).toBeFalsy();
   });
 });

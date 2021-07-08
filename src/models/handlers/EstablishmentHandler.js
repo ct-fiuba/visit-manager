@@ -2,9 +2,15 @@ const Establishment = require('../schemas/Establishment');
 const mongoose = require('mongoose');
 const SpaceHandler = require('./SpaceHandler');
 
+const { getQRInfo } = require('../../utils/qr');
+
 module.exports = function EstablishmentHandler() {
   const findEstablishments = async (query) => {
     return Establishment.find(query);
+  };
+
+  const findEstablishmentsByOwner = async (ownerId) => {
+    return Establishment.find({ ownerId: ownerId });
   };
 
   const findEstablishment = async (establishmentId) => {
@@ -20,12 +26,12 @@ module.exports = function EstablishmentHandler() {
       _id: new mongoose.Types.ObjectId(),
       type: content.type,
       name: content.name,
-      email: content.email,
       address: content.address,
       city: content.city,
       state: content.state,
       zip: content.zip,
-      country: content.country
+      country: content.country,
+      ownerId: content.ownerId
     };
 
     let SpaceIds = [];
@@ -49,6 +55,25 @@ module.exports = function EstablishmentHandler() {
     return newEstablishment.save();
   };
 
+  const addSingleSpaceToEstablishment = async (content) => {
+    let establishment = await Establishment.findOne({ _id: content.establishmentId });
+
+    let space = {
+      _id: new mongoose.Types.ObjectId(),
+      name: content.name,
+      m2: content.m2,
+      estimatedVisitDuration: content.estimatedVisitDuration,
+      hasExit: content.hasExit,
+      openPlace: content.openPlace,
+      establishmentId: content.establishmentId,
+      n95Mandatory: content.n95Mandatory
+    };
+
+    establishment['spaces'].push(space._id);
+    establishment.save();
+    return await SpaceHandler().addSpace(space);
+  };
+
   const updateEstablishment = async (establishmentId, content) => {
     let modifiedEstablishment = Establishment.updateOne({ _id: establishmentId }, content);
     return modifiedEstablishment;
@@ -64,23 +89,40 @@ module.exports = function EstablishmentHandler() {
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
       if (current_space.hasExit) {
-        PDFInfo.push({name: `${current_space.name} Entrada`, id: space_id.toString(), isExit: false});
-        PDFInfo.push({name: `${current_space.name} Salida`, id: space_id.toString(), isExit: true});
+        PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, true));
+        PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
       } else {
-        PDFInfo.push({name: current_space.name, id: space_id.toString()});
+        PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
       }
     }
-    return PDFInfo;
+    let PDFData = { filename: `CT_QR_${establishment.name}.pdf`, PDFInfo };
+    return PDFData;
+  };
+
+  const getPDFDataForSingleSpace = async (establishment_name, space_id) => {
+    let PDFInfo = [];
+    let current_space = await SpaceHandler().findSpace(space_id);
+    if (current_space.hasExit) {
+      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, true));
+      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
+    } else {
+      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
+    }
+    let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}.pdf`, PDFInfo };
+    return PDFData;
   };
 
 
   return {
     findEstablishments,
+    findEstablishmentsByOwner,
     findEstablishment,
     establishmentExists,
     addEstablishment,
+    addSingleSpaceToEstablishment,
     updateEstablishment,
     deleteEstablishment,
-    getPDFData
+    getPDFData,
+    getPDFDataForSingleSpace
   };
 };
