@@ -78,7 +78,6 @@ module.exports = function PDFGenerator() {
   return {
     generateQRCode,
     generatePDF,
-    deleteFile,
-    generateQRWithoutFile
+    deleteFile
   };
 };

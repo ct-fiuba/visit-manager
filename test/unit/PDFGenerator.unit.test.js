@@ -28,13 +28,13 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (await existsPromise(testFilesDirectory)) {
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 2000));
     await rmdirPromise(testFilesDirectory);
   }
 });
 
 describe('PDF generator', () => {
-  test('should generate a QR code', async () => {
+  test.only('should generate a QR code', async () => {
     await PDFGenerator().generateQRCode(pathQR, code1);
     let file_exists = await existsPromise(pathQR);
     expect(file_exists).toBeTruthy();
