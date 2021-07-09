@@ -103,10 +103,10 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     let current_space = await SpaceHandler().findSpace(space_id);
     if (current_space.hasExit) {
-      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, true));
-      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
+      PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, true));
+      PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, false));
     } else {
-      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
+      PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, false));
     }
     let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}.pdf`, PDFInfo };
     return PDFData;
