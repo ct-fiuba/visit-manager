@@ -34,7 +34,7 @@ afterAll(async () => {
 });
 
 describe('PDF generator', () => {
-  test.only('should generate a QR code', async () => {
+  test('should generate a QR code', async () => {
     await PDFGenerator().generateQRCode(pathQR, code1);
     let file_exists = await existsPromise(pathQR);
     expect(file_exists).toBeTruthy();
