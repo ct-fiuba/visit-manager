@@ -28,7 +28,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (await existsPromise(testFilesDirectory)) {
-    await new Promise(r => setTimeout(r, 3000));
+    await new Promise(r => setTimeout(r, 1000));
     await rmdirPromise(testFilesDirectory);
   }
 });
@@ -39,7 +39,6 @@ describe('PDF generator', () => {
     let file_exists = await existsPromise(pathQR);
     expect(file_exists).toBeTruthy();
     await PDFGenerator().deleteFile(pathQR);
-    await new Promise(r => setTimeout(r, 2000));
     file_exists = await existsPromise(pathQR);
     expect(file_exists).toBeFalsy();
   });
@@ -50,7 +49,6 @@ describe('PDF generator', () => {
     let file_exists = await existsPromise(pathPDF);
     expect(file_exists).toBeTruthy();
     await PDFGenerator().deleteFile(pathPDF);
-    await new Promise(r => setTimeout(r, 2000));
     file_exists = await existsPromise(pathPDF);
     expect(file_exists).toBeFalsy();
   });
