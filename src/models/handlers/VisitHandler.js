@@ -28,7 +28,7 @@ module.exports = function VisitHandler() {
       _id: new mongoose.Types.ObjectId(),
       scanCode,
       userGeneratedCode: content.userGeneratedCode,
-      timestamp: content.timestamp,
+      entranceTimestamp: content.entranceTimestamp,
       vaccinated: content.vaccinated,
       vaccineReceived: content.vaccineReceived,
       vaccinatedDate: content.vaccinatedDate,

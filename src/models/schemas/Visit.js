@@ -10,10 +10,14 @@ let visitSchema = mongoose.Schema({
     required: true,
     unique: true
   },
-  timestamp: {
+  entranceTimestamp: {
     type: Date,
     default: Date.now(),
     required: true
+  },
+  exitTimestamp: {
+    type: Date,
+    required: false
   },
   vaccinated: {
     type: Number,
