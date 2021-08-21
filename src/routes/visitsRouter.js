@@ -10,5 +10,6 @@ module.exports = function visitsRouter() {
     express.Router()
       .get('/', visitsController.get)
       .post('/', bodyVisitsValidator.addValidations, bodyVisitsValidator.validate, visitsController.add)
+      .post('/addExitTimestamp', bodyVisitsValidator.addExitTimestampValidations, bodyVisitsValidator.validate, visitsController.addExitTimestamp)
   );
 };

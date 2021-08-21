@@ -364,16 +364,47 @@ describe('App test', () => {
         });
       });
 
-      test('add visit to the second space with _exit suffix should return 201', async () => {
+      test('add first visit to the second space should return 201', async () => {
         const visit = {
-          scanCode: `${spaces1_id[1]}_exit`,
-          userGeneratedCode: "POIQULNVOER",
+          scanCode: spaces1_id[1],
+          userGeneratedCode: "YUIOPHJK1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
           covidRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
+        });
+      });
+
+      test('get visits to the second space should return 1 scan without exitTimestamp', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(1);
+          expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO");
+          expect(res.body[0]).not.toHaveProperty('exitTimestamp')
+        });
+      });
+
+      test('update visit with exit timestamp should return 201', async () => {
+        const visit = {
+          scanCode: spaces1_id[1],
+          userGeneratedCode: "YUIOPHJK1234YUIO",
+          exitTimestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
+        };
+        await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('get visits to the second space should return 1 scan with exitTimestamp', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(1);
+          expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO");
+          expect(res.body[0]).toHaveProperty('exitTimestamp')
         });
       });
 

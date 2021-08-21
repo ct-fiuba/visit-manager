@@ -475,36 +475,89 @@
           }
         }
       }
+    },
+    "/visits/addExitTimestamp": {
+      "post": {
+        "tags": [
+          "visits"
+        ],
+        "summary": "Add exit timestamp to visit",
+        "operationId": "addExitTimestamp",
+        "requestBody": {
+          "description": "Add exit timestamp to visit",
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "allOf": [
+                  {
+                    "$ref": "#/components/schemas/VisitAddExitTimestamp"
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Visit updated successfully",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "properties": {
+                    "_id": {
+                      "type": "string",
+                      "example": "1"
+                    },
+                    "exitTimestamp": {
+                      "type": "string",
+                      "example": "1970-01-01 00:00:01"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Missing fields / Invalid visibility"
+          },
+          "404": {
+            "description": "Space linked to the scan code not found"
+          }
+        }
+      }
     }
   },
   "components": {
     "parameters": {
-        "pathEstablishmentId": {
-          "in": "path",
-          "name": "establishmentId",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "minimum": 1
-          }
-        },
-        "pathSpaceId": {
-          "in": "path",
-          "name": "spaceId",
-          "required": true,
-          "schema": {
-            "type": "integer",
-            "minimum": 1
-          }
-        },
-        "pathOwnerId": {
-          "in": "path",
-          "name": "ownerId",
-          "required": true,
-          "schema": {
-            "type": "string"
-          }
+      "pathEstablishmentId": {
+        "in": "path",
+        "name": "establishmentId",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "minimum": 1
         }
+      },
+      "pathSpaceId": {
+        "in": "path",
+        "name": "spaceId",
+        "required": true,
+        "schema": {
+          "type": "integer",
+          "minimum": 1
+        }
+      },
+      "pathOwnerId": {
+        "in": "path",
+        "name": "ownerId",
+        "required": true,
+        "schema": {
+          "type": "string"
+        }
+      }
     },
     "schemas": {
       "Establishment": {
@@ -857,6 +910,50 @@
             "example": "1PWIOEJPOVUP12OI34J"
           },
           "entranceTimestamp": {
+            "type": "string",
+            "example": "1970-01-01 00:00:01"
+          },
+          "vaccinated": {
+            "type": "integer",
+            "example": "1"
+          },
+          "vaccineReceived": {
+            "type": "string",
+            "example": "Pfizer"
+          },
+          "vaccinatedDate": {
+            "type": "string",
+            "example": "1970-01-01 00:00:01"
+          },
+          "covidRecovered": {
+            "type": "boolean",
+            "example": "true"
+          },
+          "covidRecoveredDate": {
+            "type": "boolean",
+            "example": "true"
+          }
+        }
+      },
+      "VisitAddExitTimestamp": {
+        "type": "object",
+        "required": [
+          "scanCode",
+          "userGeneratedCode",
+          "exitTimestamp",
+          "vaccinated",
+          "covidRecovered"
+        ],
+        "properties": {
+          "scanCode": {
+            "type": "string",
+            "example": "MNPQWOEUPO452345"
+          },
+          "userGeneratedCode": {
+            "type": "string",
+            "example": "1PWIOEJPOVUP12OI34J"
+          },
+          "exitTimestamp": {
             "type": "string",
             "example": "1970-01-01 00:00:01"
           },

@@ -5,6 +5,10 @@ module.exports = function bodyVisitsValidatorMiddleware() {
     body(['userGeneratedCode', 'scanCode', 'entranceTimestamp'], 'Missing value').exists(),
   ];
 
+  const addExitTimestampValidations = [
+    body(['userGeneratedCode', 'scanCode', 'exitTimestamp'], 'Missing value').exists(),
+  ];
+
   const validate = (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
@@ -17,6 +21,7 @@ module.exports = function bodyVisitsValidatorMiddleware() {
 
   return {
     addValidations,
+    addExitTimestampValidations,
     validate
   };
 };
