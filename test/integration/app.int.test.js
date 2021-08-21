@@ -29,6 +29,14 @@ let spaces1 = [
       estimatedVisitDuration: "45",
       openPlace: true,
       n95Mandatory: false
+    },
+    {
+      name: "Subsuelo",
+      hasExit: true,
+      m2: "40",
+      estimatedVisitDuration: "10",
+      openPlace: false,
+      n95Mandatory: false
     }
   ];
 
@@ -213,7 +221,7 @@ describe('App test', () => {
       test('disabled space should return enabled: false', async () => {
         await request(server).get(`/establishments/${establishment_id1}`).then(res => {
           expect(res.status).toBe(200);
-          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(1);
+          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(2);
         });
       });
 
@@ -250,7 +258,7 @@ describe('App test', () => {
       test('enabled previously disabled space should return enabled: true', async () => {
         await request(server).get(`/establishments/${establishment_id1}`).then(res => {
           expect(res.status).toBe(200);
-          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(2);
+          expect(res.body.spacesInfo.map(x => x.enabled ? 1 : 0).reduce((a, b) => a+b)).toBe(3);
         });
       });
     });
@@ -405,6 +413,37 @@ describe('App test', () => {
           expect(res.body.length).toBe(1);
           expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO");
           expect(res.body[0]).toHaveProperty('exitTimestamp')
+        });
+      });
+
+      test('update visit with exit timestamp when the visit does not exist should also return 201', async () => {
+        const visit = {
+          scanCode: spaces1_id[2],
+          userGeneratedCode: "YUIOPHJK1234YUIO1234",
+          exitTimestamp: Date.now(),
+          vaccinated: 0,
+          covidRecovered: false
+        };
+        await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
+          expect(res.status).toBe(201);
+        });
+      });
+
+      test('get visits to the third space should return 1 scan with exitTimestamp', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[2]}`).then(res => {
+          expect(res.status).toBe(200);
+          expect(res.body.length).toBe(1);
+          expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO1234");
+          expect(res.body[0]).toHaveProperty('exitTimestamp')
+        });
+      });
+
+      test('get visits to the second space should a visit with the entranceTimestamp equal to the exitTimestamp minus the estimatedVisitDuration of the space', async () => {
+        await request(server).get(`/visits?scanCode=${spaces1_id[2]}`).then(res => {
+          expect(res.status).toBe(200);
+          let entranceTimestamp = new Date(res.body[0].exitTimestamp);
+          entranceTimestamp.setMinutes(entranceTimestamp.getMinutes() - 10);
+          expect((new Date(res.body[0].entranceTimestamp)).toString()).toBe(entranceTimestamp.toString());
         });
       });
 

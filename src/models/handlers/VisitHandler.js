@@ -1,4 +1,5 @@
 const Visit = require('../schemas/Visit');
+const Space = require('../schemas/Space');
 const mongoose = require('mongoose');
 const SpaceHandler = require('./SpaceHandler');
 
