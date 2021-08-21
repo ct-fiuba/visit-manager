@@ -377,14 +377,6 @@ describe('App test', () => {
         });
       });
 
-      test('get visits to the second space should return 1 scan with isExitScan set to true', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
-          expect(res.status).toBe(200);
-          expect(res.body.length).toBe(1);
-          expect(res.body[0].isExitScan).toBeTruthy();
-        });
-      });
-
       test('add visit to disabled space should return 404', async () => {
         const spaceUpdateBody = {
           establishmentId: establishment_id1,

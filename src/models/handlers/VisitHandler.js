@@ -21,15 +21,12 @@ module.exports = function VisitHandler() {
 
   const addVisit = async (content) => {
     let scanCode = content.scanCode;
-    let isExitScan = false;
     if (scanCode.substr(scanCode.length - 5) === '_exit') {
       scanCode = scanCode.substr(0, scanCode.length - 5);
-      isExitScan = true;
     }
     let visitData = {
       _id: new mongoose.Types.ObjectId(),
       scanCode,
-      isExitScan,
       userGeneratedCode: content.userGeneratedCode,
       timestamp: content.timestamp,
       vaccinated: content.vaccinated,

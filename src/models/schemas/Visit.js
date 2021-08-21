@@ -5,11 +5,6 @@ let visitSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  isExitScan: {
-    type: Boolean,
-    default: false,
-    required: true
-  },
   userGeneratedCode: {
     type: String,
     required: true,
