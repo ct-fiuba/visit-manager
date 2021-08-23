@@ -27,7 +27,24 @@ module.exports = function visitsService(visitHandler) {
       .catch(err => errorDB(res, err));
   };
 
+  const addExitTimestamp = async (req, res) => {
+    return visitHandler.spaceExists(req.body.scanCode)
+      .then(space => {
+        if (!space) {
+          return res.status(404).json({ reason: 'Space linked to the scan code not found' });
+        }
+        if (!space.enabled) {
+          return res.status(404).json({ reason: 'Space linked to the scan code is disabled' });
+        }
+        return visitHandler.addExitTimestamp(req.body)
+          .then(visit => res.status(201).json({ _id: visit._id, exitTimestamp: visit.exitTimestamp }))
+          .catch(err => errorDB(res, err));
+      })
+      .catch(err => errorDB(res, err));
+  };
+
   return {
-    registerVisit
+    registerVisit,
+    addExitTimestamp
   };
 };

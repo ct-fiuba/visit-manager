@@ -17,8 +17,13 @@ module.exports = function visitsController(visitHandler) {
     return await visitsService(visitHandler).registerVisit(req, res);
   };
 
+  const addExitTimestamp = async (req, res, next) => {
+    return await visitsService(visitHandler).addExitTimestamp(req, res);
+  };
+
   return {
     add,
+    addExitTimestamp,
     get
   };
 };

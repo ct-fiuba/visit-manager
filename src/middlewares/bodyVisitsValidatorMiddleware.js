@@ -2,7 +2,11 @@ const { body , validationResult } = require('express-validator');
 
 module.exports = function bodyVisitsValidatorMiddleware() {
   const addValidations = [
-    body(['userGeneratedCode', 'scanCode', 'timestamp'], 'Missing value').exists(),
+    body(['userGeneratedCode', 'scanCode', 'entranceTimestamp'], 'Missing value').exists(),
+  ];
+
+  const addExitTimestampValidations = [
+    body(['userGeneratedCode', 'scanCode', 'exitTimestamp'], 'Missing value').exists(),
   ];
 
   const validate = (req, res, next) => {
@@ -17,6 +21,7 @@ module.exports = function bodyVisitsValidatorMiddleware() {
 
   return {
     addValidations,
+    addExitTimestampValidations,
     validate
   };
 };

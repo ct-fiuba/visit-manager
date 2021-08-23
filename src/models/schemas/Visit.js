@@ -5,20 +5,19 @@ let visitSchema = mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
-  isExitScan: {
-    type: Boolean,
-    default: false,
-    required: true
-  },
   userGeneratedCode: {
     type: String,
     required: true,
     unique: true
   },
-  timestamp: {
+  entranceTimestamp: {
     type: Date,
     default: Date.now(),
     required: true
+  },
+  exitTimestamp: {
+    type: Date,
+    required: false
   },
   vaccinated: {
     type: Number,

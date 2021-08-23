@@ -7,7 +7,7 @@ let next;
 let _id = 1;
 let scanCode = 'ASDF1234';
 let userGeneratedCode = 'QWER456309852';
-let timestamp = Date.now();
+let entranceTimestamp = Date.now();
 
 beforeEach(() => {
   visitHandler = {
@@ -34,7 +34,7 @@ const exampleVisit = {
   _id,
   scanCode,
   userGeneratedCode,
-  timestamp,
+  entranceTimestamp,
 };
 
 describe('get', () => {
