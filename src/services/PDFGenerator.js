@@ -29,8 +29,20 @@ module.exports = function PDFGenerator() {
     return await unlinkPromise(filepath);
   }
 
+  const generateQRFiles = async (QRsInfo) => {
+    let counter = 1;
+    let tmp_files = [];
+    for (const element of QRsInfo) {
+      let tmpQRFile = path.join(__dirname, "tmp/tmp" + counter + ".png");
+      tmp_files.push({tmpFile: tmpQRFile, title: element.title, code: element.code});
+      counter += 1;
+    }
+    let generateFilesPromises = tmp_files.map(x => generateQRCode(x.tmpFile, JSON.stringify(x.code)));
+    await Promise.all(generateFilesPromises);
+    return tmp_files;
+  }
+
   const generatePDF = async (res, QRsInfo) => {
-    return (async () => {
       if (!(await existsPromise(tmpQRDirectory))) {
         await mkdirPromise(tmpQRDirectory);
       }
@@ -39,18 +51,11 @@ module.exports = function PDFGenerator() {
 
       doc.pipe(res);
 
-      let counter = 1;
-      let tmp_files = [];
-      for (const element of QRsInfo) {
-        let tmpQRFile = path.join(__dirname, "tmp/tmp" + counter + ".png");
-        tmp_files.push([tmpQRFile, element[0], element[1]]);
-        counter += 1;
-      }
-      let generateFilesPromises = tmp_files.map(x => generateQRCode(x[0], x[2]));
-      await Promise.all(generateFilesPromises);
+      const tmp_files = await generateQRFiles(QRsInfo);
+      
       for (const x of tmp_files) {
-        let tmpQRFile = x[0];
-        let title = x[1];
+        let tmpQRFile = x.tmpFile;
+        let title = x.title;
         doc.addPage();
         // Embed a font, set the font size, and render some text
         doc.fontSize(24)
@@ -64,11 +69,10 @@ module.exports = function PDFGenerator() {
         });
       }
 
-      let deletePromises = tmp_files.map(x => deleteFile(x[0]));
+      let deletePromises = tmp_files.map(x => deleteFile(x.tmpFile));
       await Promise.all(deletePromises);
       await rmdirPromise(tmpQRDirectory);
       return doc.end();
-    })()
   };
 
   return {

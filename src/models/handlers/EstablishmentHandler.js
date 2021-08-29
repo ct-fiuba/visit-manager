@@ -2,6 +2,8 @@ const Establishment = require('../schemas/Establishment');
 const mongoose = require('mongoose');
 const SpaceHandler = require('./SpaceHandler');
 
+const { getQRInfo } = require('../../utils/qr');
+
 module.exports = function EstablishmentHandler() {
   const findEstablishments = async (query) => {
     return Establishment.find(query);
@@ -86,11 +88,9 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
+      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false));
       if (current_space.hasExit) {
-        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} (Entrada)`, space_id.toString()]);
-        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name} (Salida)`, `${space_id.toString()}_exit`]);
-      } else {
-        PDFInfo.push([`Establecimiento: ${establishment.name}\nEspacio: ${current_space.name}`, space_id.toString()]);
+        PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, true));
       }
     }
     let PDFData = { filename: `CT_QR_${establishment.name}.pdf`, PDFInfo };
@@ -100,11 +100,9 @@ module.exports = function EstablishmentHandler() {
   const getPDFDataForSingleSpace = async (establishment_name, space_id) => {
     let PDFInfo = [];
     let current_space = await SpaceHandler().findSpace(space_id);
+    PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, false));
     if (current_space.hasExit) {
-      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} (Entrada)`, space_id.toString()]);
-      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name} (Salida)`, `${space_id.toString()}_exit`]);
-    } else {
-      PDFInfo.push([`Establecimiento: ${establishment_name}\nEspacio: ${current_space.name}`, space_id.toString()]);
+      PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, true));  
     }
     let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}.pdf`, PDFInfo };
     return PDFData;

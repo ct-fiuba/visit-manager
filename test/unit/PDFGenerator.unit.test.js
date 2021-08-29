@@ -16,8 +16,8 @@ const pathQR = path.join(__dirname, "testFiles/qr1.png");
 const pathPDF = path.join(__dirname, "testFiles/pdfGenerated.pdf");
 
 const QRsInfo = [
-  [title1, code1],
-  [title2, code2],
+  {title: title1, code: {id: code1} },
+  {title: title2, code: {id: code2} },
 ]
 
 beforeAll(async () => {
@@ -28,7 +28,7 @@ beforeAll(async () => {
 
 afterAll(async () => {
   if (await existsPromise(testFilesDirectory)) {
-    await new Promise(r => setTimeout(r, 1000));
+    await new Promise(r => setTimeout(r, 2000));
     await rmdirPromise(testFilesDirectory);
   }
 });
