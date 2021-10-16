@@ -297,7 +297,7 @@ describe('App test', () => {
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -310,7 +310,7 @@ describe('App test', () => {
           userGeneratedCode: "BNIUO1NT12NBF",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -323,7 +323,7 @@ describe('App test', () => {
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -336,7 +336,7 @@ describe('App test', () => {
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -365,7 +365,7 @@ describe('App test', () => {
           userGeneratedCode: "XCBVQIWERU1234",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);
@@ -378,7 +378,7 @@ describe('App test', () => {
           userGeneratedCode: "YUIOPHJK1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -400,7 +400,7 @@ describe('App test', () => {
           userGeneratedCode: "YUIOPHJK1234YUIO",
           exitTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -422,7 +422,7 @@ describe('App test', () => {
           userGeneratedCode: "YUIOPHJK1234YUIO1234",
           exitTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -458,7 +458,7 @@ describe('App test', () => {
           userGeneratedCode: "POIQULNVOZZ",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);

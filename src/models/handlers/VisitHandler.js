@@ -29,8 +29,8 @@ module.exports = function VisitHandler() {
       vaccinated: content.vaccinated,
       vaccineReceived: content.vaccineReceived,
       vaccinatedDate: content.vaccinatedDate,
-      covidRecovered: content.covidRecovered,
-      covidRecoveredDate: content.covidRecoveredDate
+      illnessRecovered: content.illnessRecovered,
+      illnessRecoveredDate: content.illnessRecoveredDate
     };
 
     let newVisit = new Visit(visitData);
@@ -56,8 +56,8 @@ module.exports = function VisitHandler() {
         vaccinated: content.vaccinated,
         vaccineReceived: content.vaccineReceived,
         vaccinatedDate: content.vaccinatedDate,
-        covidRecovered: content.covidRecovered,
-        covidRecoveredDate: content.covidRecoveredDate
+        illnessRecovered: content.illnessRecovered,
+        illnessRecoveredDate: content.illnessRecoveredDate
       };
       let newVisit = new Visit(visitData);
       return newVisit.save();

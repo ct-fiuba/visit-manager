@@ -7,7 +7,7 @@ module.exports = function PDFGenerator() {
   const util = require('util');
 
   const tmpQRDirectory = path.join(__dirname, "tmp");
-  const logoDirectory = path.join(__dirname, '../../images/covid.png');
+  const logoDirectory = path.join(__dirname, '../../images/illness.png');
   const unlinkPromise = util.promisify(fs.unlink);
   const existsPromise = util.promisify(fs.exists);
   const mkdirPromise = util.promisify(fs.mkdir);
@@ -52,7 +52,7 @@ module.exports = function PDFGenerator() {
       doc.pipe(res);
 
       const tmp_files = await generateQRFiles(QRsInfo);
-      
+
       for (const x of tmp_files) {
         let tmpQRFile = x.tmpFile;
         let title = x.title;
