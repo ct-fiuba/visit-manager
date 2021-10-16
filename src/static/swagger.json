@@ -440,7 +440,7 @@
             "description": "Missing fields / Invalid visibility"
           },
           "404": {
-            "description": "Space linked to the scan code not found"
+            "description": "Space linked to the space id not found"
           },
           "409": {
             "description": "Establishment already registered"
@@ -524,7 +524,7 @@
             "description": "Missing fields / Invalid visibility"
           },
           "404": {
-            "description": "Space linked to the scan code not found"
+            "description": "Space linked to the space id not found"
           }
         }
       }
@@ -748,13 +748,13 @@
       "VisitNew": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "entranceTimestamp",
           "genuxToken"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },
@@ -894,14 +894,14 @@
       "Visit": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "entranceTimestamp",
           "vaccinated",
           "covidRecovered"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },
@@ -938,14 +938,14 @@
       "VisitAddExitTimestamp": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "exitTimestamp",
           "vaccinated",
           "covidRecovered"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },

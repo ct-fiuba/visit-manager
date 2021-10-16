@@ -10,13 +10,13 @@ module.exports = function visitsService(visitHandler) {
         if (visit) {
           return res.status(409).json({ reason: 'Visit already registered' });
         }
-        return visitHandler.spaceExists(req.body.scanCode)
+        return visitHandler.spaceExists(req.body.spaceId)
           .then(space => {
             if (!space) {
-              return res.status(404).json({ reason: 'Space linked to the scan code not found' });
+              return res.status(404).json({ reason: 'Space linked to the space id not found' });
             }
             if (!space.enabled) {
-              return res.status(404).json({ reason: 'Space linked to the scan code is disabled' });
+              return res.status(404).json({ reason: 'Space linked to the space id is disabled' });
             }
             return visitHandler.addVisit(req.body)
               .then(visit => res.status(201).json({ _id: visit._id }))
@@ -28,13 +28,13 @@ module.exports = function visitsService(visitHandler) {
   };
 
   const addExitTimestamp = async (req, res) => {
-    return visitHandler.spaceExists(req.body.scanCode)
+    return visitHandler.spaceExists(req.body.spaceId)
       .then(space => {
         if (!space) {
-          return res.status(404).json({ reason: 'Space linked to the scan code not found' });
+          return res.status(404).json({ reason: 'Space linked to the space id not found' });
         }
         if (!space.enabled) {
-          return res.status(404).json({ reason: 'Space linked to the scan code is disabled' });
+          return res.status(404).json({ reason: 'Space linked to the space id is disabled' });
         }
         return visitHandler.addExitTimestamp(req.body)
           .then(visit => res.status(201).json({ _id: visit._id, exitTimestamp: visit.exitTimestamp }))
