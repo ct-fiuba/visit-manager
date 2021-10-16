@@ -43,7 +43,7 @@ module.exports = function EstablishmentHandler() {
         m2: _space.m2,
         estimatedVisitDuration: _space.estimatedVisitDuration,
         hasExit: _space.hasExit,
-        openPlace: _space.openPlace,
+        openSpace: _space.openSpace,
         establishmentId: establishmentData._id,
         n95Mandatory: _space.n95Mandatory
       };
@@ -64,7 +64,7 @@ module.exports = function EstablishmentHandler() {
       m2: content.m2,
       estimatedVisitDuration: content.estimatedVisitDuration,
       hasExit: content.hasExit,
-      openPlace: content.openPlace,
+      openSpace: content.openSpace,
       establishmentId: content.establishmentId,
       n95Mandatory: content.n95Mandatory
     };

@@ -63,7 +63,7 @@ describe('add', () => {
         hasExit: true,
         m2: "1000",
         estimatedVisitDuration: "60",
-        openPlace: false,
+        openSpace: false,
         n95Mandatory: false,
         enabled: true
       });

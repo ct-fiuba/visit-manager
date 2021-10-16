@@ -20,7 +20,7 @@ let spacesInfo = [
     m2: 10,
     estimatedVisitDuration: 30,
     hasExit: false,
-    openPlace: true,
+    openSpace: true,
     establishmentId: _id,
     n95Mandatory: true
   },
@@ -30,7 +30,7 @@ let spacesInfo = [
     m2: 20,
     estimatedVisitDuration: 40,
     hasExit: false,
-    openPlace: true,
+    openSpace: true,
     establishmentId: _id,
     n95Mandatory: true
   }

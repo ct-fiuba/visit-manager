@@ -19,7 +19,7 @@ let spaces1 = [
       hasExit: true,
       m2: "1000",
       estimatedVisitDuration: "60",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     },
     {
@@ -27,7 +27,7 @@ let spaces1 = [
       hasExit: false,
       m2: "400",
       estimatedVisitDuration: "45",
-      openPlace: true,
+      openSpace: true,
       n95Mandatory: false
     },
     {
@@ -35,7 +35,7 @@ let spaces1 = [
       hasExit: true,
       m2: "40",
       estimatedVisitDuration: "10",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     }
   ];
@@ -49,7 +49,7 @@ let spaces2 = [
       hasExit: false,
       m2: "3000",
       estimatedVisitDuration: "30",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     }
   ];
@@ -58,7 +58,7 @@ let space3 = {
   hasExit: false,
   m2: 300,
   estimatedVisitDuration: 15,
-  openPlace: false,
+  openSpace: false,
   n95Mandatory: false
 }
 
@@ -144,7 +144,7 @@ describe('App test', () => {
           expect(res.body.hasExit).toBe(space3.hasExit);
           expect(res.body.m2).toBe(space3.m2);
           expect(res.body.estimatedVisitDuration).toBe(space3.estimatedVisitDuration);
-          expect(res.body.openPlace).toBe(space3.openPlace);
+          expect(res.body.openSpace).toBe(space3.openSpace);
           expect(res.body.n95Mandatory).toBe(space3.n95Mandatory);
           space3_id = space3._id;
         });

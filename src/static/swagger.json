@@ -620,7 +620,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openPlace": {
+                "openSpace": {
                   "type": "boolean",
                   "example": "true"
                 },
@@ -695,7 +695,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openPlace": {
+                "openSpace": {
                   "type": "boolean",
                   "example": "true"
                 },
@@ -779,7 +779,7 @@
           "m2",
           "estimatedVisitDuration",
           "hasExit",
-          "openPlace",
+          "openSpace",
           "establishmentId"
         ],
         "properties": {
@@ -799,7 +799,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
@@ -820,7 +820,7 @@
           "m2",
           "estimatedVisitDuration",
           "hasExit",
-          "openPlace",
+          "openSpace",
           "establishmentId",
           "_id"
         ],
@@ -841,7 +841,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
@@ -877,7 +877,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
