@@ -19,7 +19,7 @@ let spaces1 = [
       hasExit: true,
       m2: "1000",
       estimatedVisitDuration: "60",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     },
     {
@@ -27,7 +27,7 @@ let spaces1 = [
       hasExit: false,
       m2: "400",
       estimatedVisitDuration: "45",
-      openPlace: true,
+      openSpace: true,
       n95Mandatory: false
     },
     {
@@ -35,7 +35,7 @@ let spaces1 = [
       hasExit: true,
       m2: "40",
       estimatedVisitDuration: "10",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     }
   ];
@@ -49,7 +49,7 @@ let spaces2 = [
       hasExit: false,
       m2: "3000",
       estimatedVisitDuration: "30",
-      openPlace: false,
+      openSpace: false,
       n95Mandatory: false
     }
   ];
@@ -58,7 +58,7 @@ let space3 = {
   hasExit: false,
   m2: 300,
   estimatedVisitDuration: 15,
-  openPlace: false,
+  openSpace: false,
   n95Mandatory: false
 }
 
@@ -144,7 +144,7 @@ describe('App test', () => {
           expect(res.body.hasExit).toBe(space3.hasExit);
           expect(res.body.m2).toBe(space3.m2);
           expect(res.body.estimatedVisitDuration).toBe(space3.estimatedVisitDuration);
-          expect(res.body.openPlace).toBe(space3.openPlace);
+          expect(res.body.openSpace).toBe(space3.openSpace);
           expect(res.body.n95Mandatory).toBe(space3.n95Mandatory);
           space3_id = space3._id;
         });
@@ -293,11 +293,11 @@ describe('App test', () => {
     describe('add visits', () => {
       test('add first visit should return 201', async () => {
         const visit = {
-          scanCode: spaces1_id[0],
+          spaceId: spaces1_id[0],
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -306,11 +306,11 @@ describe('App test', () => {
 
       test('add second visit to the same space should return 201', async () => {
         const visit = {
-          scanCode: spaces1_id[0],
+          spaceId: spaces1_id[0],
           userGeneratedCode: "BNIUO1NT12NBF",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -319,11 +319,11 @@ describe('App test', () => {
 
       test('add visit with the same generated code to the same space should return 409', async () => {
         const visit = {
-          scanCode: spaces1_id[0],
+          spaceId: spaces1_id[0],
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -332,11 +332,11 @@ describe('App test', () => {
 
       test('add visit with the same generated code to the other space should return 409', async () => {
         const visit = {
-          scanCode: spaces1_id[1],
+          spaceId: spaces1_id[1],
           userGeneratedCode: "QWER1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(409);
@@ -344,7 +344,7 @@ describe('App test', () => {
       });
 
       test('get visits to the first space should return 2 scans', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[0]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[0]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(2);
           expect([res.body[0].userGeneratedCode, res.body[1].userGeneratedCode]).toContain("BNIUO1NT12NBF");
@@ -353,19 +353,19 @@ describe('App test', () => {
       });
 
       test('get visits to the second space should return 0 scans', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[1]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(0);
         });
       });
 
-      test('add visit to non existent scan code should return 404', async () => {
+      test('add visit to non existent space id should return 404', async () => {
         const visit = {
-          scanCode: new mongoose.Types.ObjectId(),
+          spaceId: new mongoose.Types.ObjectId(),
           userGeneratedCode: "XCBVQIWERU1234",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);
@@ -374,11 +374,11 @@ describe('App test', () => {
 
       test('add first visit to the second space should return 201', async () => {
         const visit = {
-          scanCode: spaces1_id[1],
+          spaceId: spaces1_id[1],
           userGeneratedCode: "YUIOPHJK1234YUIO",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -386,7 +386,7 @@ describe('App test', () => {
       });
 
       test('get visits to the second space should return 1 scan without exitTimestamp', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[1]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(1);
           expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO");
@@ -396,11 +396,11 @@ describe('App test', () => {
 
       test('update visit with exit timestamp should return 201', async () => {
         const visit = {
-          scanCode: spaces1_id[1],
+          spaceId: spaces1_id[1],
           userGeneratedCode: "YUIOPHJK1234YUIO",
           exitTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -408,7 +408,7 @@ describe('App test', () => {
       });
 
       test('get visits to the second space should return 1 scan with exitTimestamp', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[1]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[1]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(1);
           expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO");
@@ -418,11 +418,11 @@ describe('App test', () => {
 
       test('update visit with exit timestamp when the visit does not exist should also return 201', async () => {
         const visit = {
-          scanCode: spaces1_id[2],
+          spaceId: spaces1_id[2],
           userGeneratedCode: "YUIOPHJK1234YUIO1234",
           exitTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits/addExitTimestamp').send(visit).then(res => {
           expect(res.status).toBe(201);
@@ -430,7 +430,7 @@ describe('App test', () => {
       });
 
       test('get visits to the third space should return 1 scan with exitTimestamp', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[2]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[2]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.body.length).toBe(1);
           expect(res.body[0].userGeneratedCode).toBe("YUIOPHJK1234YUIO1234");
@@ -439,7 +439,7 @@ describe('App test', () => {
       });
 
       test('get visits to the second space should a visit with the entranceTimestamp equal to the exitTimestamp minus the estimatedVisitDuration of the space', async () => {
-        await request(server).get(`/visits?scanCode=${spaces1_id[2]}`).then(res => {
+        await request(server).get(`/visits?spaceId=${spaces1_id[2]}`).then(res => {
           expect(res.status).toBe(200);
           let entranceTimestamp = new Date(res.body[0].exitTimestamp);
           entranceTimestamp.setMinutes(entranceTimestamp.getMinutes() - 10);
@@ -454,11 +454,11 @@ describe('App test', () => {
         };
         await request(server).put(`/establishments/space/${spaces1_id[0]}`).send(spaceUpdateBody);
         const visit = {
-          scanCode: `${spaces1_id[0]}`,
+          spaceId: `${spaces1_id[0]}`,
           userGeneratedCode: "POIQULNVOZZ",
           entranceTimestamp: Date.now(),
           vaccinated: 0,
-          covidRecovered: false
+          illnessRecovered: false
         };
         await request(server).post('/visits').send(visit).then(res => {
           expect(res.status).toBe(404);

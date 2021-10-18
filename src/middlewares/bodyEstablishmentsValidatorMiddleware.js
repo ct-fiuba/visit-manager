@@ -9,7 +9,7 @@ module.exports = function bodyEstablishmentsValidatorMiddleware() {
     body(['_id'], 'Missing value').exists()
   ];
   const addSingleSpaceValidations = [
-    body(['name', 'm2', 'estimatedVisitDuration', 'hasExit', 'openPlace', 'establishmentId'], 'Missing value').exists(),
+    body(['name', 'm2', 'estimatedVisitDuration', 'hasExit', 'openSpace', 'establishmentId'], 'Missing value').exists(),
   ];
   const updateSpaceValidations = [
     body(['establishmentId'], 'Missing value').exists(),

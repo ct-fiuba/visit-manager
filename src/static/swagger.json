@@ -440,7 +440,7 @@
             "description": "Missing fields / Invalid visibility"
           },
           "404": {
-            "description": "Space linked to the scan code not found"
+            "description": "Space linked to the space id not found"
           },
           "409": {
             "description": "Establishment already registered"
@@ -524,7 +524,7 @@
             "description": "Missing fields / Invalid visibility"
           },
           "404": {
-            "description": "Space linked to the scan code not found"
+            "description": "Space linked to the space id not found"
           }
         }
       }
@@ -620,7 +620,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openPlace": {
+                "openSpace": {
                   "type": "boolean",
                   "example": "true"
                 },
@@ -695,7 +695,7 @@
                   "type": "integer",
                   "example": 200
                 },
-                "openPlace": {
+                "openSpace": {
                   "type": "boolean",
                   "example": "true"
                 },
@@ -748,13 +748,13 @@
       "VisitNew": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "entranceTimestamp",
           "genuxToken"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },
@@ -779,7 +779,7 @@
           "m2",
           "estimatedVisitDuration",
           "hasExit",
-          "openPlace",
+          "openSpace",
           "establishmentId"
         ],
         "properties": {
@@ -799,7 +799,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
@@ -820,7 +820,7 @@
           "m2",
           "estimatedVisitDuration",
           "hasExit",
-          "openPlace",
+          "openSpace",
           "establishmentId",
           "_id"
         ],
@@ -841,7 +841,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
@@ -877,7 +877,7 @@
             "type": "boolean",
             "example": false
           },
-          "openPlace": {
+          "openSpace": {
             "type": "boolean",
             "example": true
           },
@@ -894,14 +894,14 @@
       "Visit": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "entranceTimestamp",
           "vaccinated",
-          "covidRecovered"
+          "illnessRecovered"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },
@@ -925,11 +925,11 @@
             "type": "string",
             "example": "1970-01-01 00:00:01"
           },
-          "covidRecovered": {
+          "illnessRecovered": {
             "type": "boolean",
             "example": "true"
           },
-          "covidRecoveredDate": {
+          "illnessRecoveredDate": {
             "type": "boolean",
             "example": "true"
           }
@@ -938,14 +938,14 @@
       "VisitAddExitTimestamp": {
         "type": "object",
         "required": [
-          "scanCode",
+          "spaceId",
           "userGeneratedCode",
           "exitTimestamp",
           "vaccinated",
-          "covidRecovered"
+          "illnessRecovered"
         ],
         "properties": {
-          "scanCode": {
+          "spaceId": {
             "type": "string",
             "example": "MNPQWOEUPO452345"
           },
@@ -969,11 +969,11 @@
             "type": "string",
             "example": "1970-01-01 00:00:01"
           },
-          "covidRecovered": {
+          "illnessRecovered": {
             "type": "boolean",
             "example": "true"
           },
-          "covidRecoveredDate": {
+          "illnessRecoveredDate": {
             "type": "boolean",
             "example": "true"
           }

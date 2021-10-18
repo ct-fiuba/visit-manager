@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 let visitSchema = mongoose.Schema({
-  scanCode: {
+  spaceId: {
     type: mongoose.Schema.Types.ObjectId,
     required: true
   },
@@ -32,12 +32,12 @@ let visitSchema = mongoose.Schema({
     type: Date,
     required: false
   },
-  covidRecovered: {
+  illnessRecovered: {
     type: Boolean,
     default: false,
     required: true
   },
-  covidRecoveredDate: {
+  illnessRecoveredDate: {
     type: Date,
     required: false
   }

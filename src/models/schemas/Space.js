@@ -17,7 +17,7 @@ let spaceSchema = mongoose.Schema({
     type: Boolean,
     required: true
   },
-  openPlace: {
+  openSpace: {
     type: Boolean,
     required: true
   },

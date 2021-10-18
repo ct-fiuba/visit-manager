@@ -1,11 +1,12 @@
 const visitsControllerFactory = require('../../src/controllers/visitsController');
+const mongoose = require('mongoose');
 
 let req;
 let res;
 let next;
 
 let _id = 1;
-let scanCode = 'ASDF1234';
+let spaceId = new mongoose.Types.ObjectId();
 let userGeneratedCode = 'QWER456309852';
 let entranceTimestamp = Date.now();
 
@@ -32,7 +33,7 @@ beforeEach(() => {
 
 const exampleVisit = {
   _id,
-  scanCode,
+  spaceId,
   userGeneratedCode,
   entranceTimestamp,
 };
@@ -63,7 +64,7 @@ describe('add', () => {
         hasExit: true,
         m2: "1000",
         estimatedVisitDuration: "60",
-        openPlace: false,
+        openSpace: false,
         n95Mandatory: false,
         enabled: true
       });
@@ -73,7 +74,7 @@ describe('add', () => {
     test('should respond successfully', async () => {
       await visitsController.add(req, res, next);
       expect(visitHandler.visitExists).toHaveBeenCalledWith(exampleVisit);
-      expect(visitHandler.spaceExists).toHaveBeenCalledWith(exampleVisit.scanCode);
+      expect(visitHandler.spaceExists).toHaveBeenCalledWith(exampleVisit.spaceId);
       expect(visitHandler.addVisit).toHaveBeenCalledWith(exampleVisit);
       expect(res.status).toHaveBeenCalledWith(201);
       expect(res.json).toHaveBeenCalledWith({ _id: exampleVisit._id });
