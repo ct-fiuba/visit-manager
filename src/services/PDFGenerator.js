@@ -8,6 +8,7 @@ module.exports = function PDFGenerator() {
 
   const tmpQRDirectory = path.join(__dirname, "tmp");
   const logoDirectory = path.join(__dirname, '../../images/illness.png');
+  const backgroundTemplateDirectory = path.join(__dirname, '../../images/backgroundTemplate.png');
   const unlinkPromise = util.promisify(fs.unlink);
   const existsPromise = util.promisify(fs.exists);
   const mkdirPromise = util.promisify(fs.mkdir);
@@ -47,7 +48,7 @@ module.exports = function PDFGenerator() {
         await mkdirPromise(tmpQRDirectory);
       }
       // Create a document
-      const doc = new PDFDocument({ autoFirstPage: false });
+      const doc = new PDFDocument({ autoFirstPage: false, layout : 'landscape' });
 
       doc.pipe(res);
 
@@ -56,17 +57,19 @@ module.exports = function PDFGenerator() {
       for (const x of tmp_files) {
         let tmpQRFile = x.tmpFile;
         let title = x.title;
-        doc.addPage();
+        doc.addPage({ margin: 20, layout: 'landscape', size: 'A4' });
+
+        doc.image(backgroundTemplateDirectory, {fit: [800, 650], align: 'left', valign: 'top'} );
         // Embed a font, set the font size, and render some text
-        doc.fontSize(24)
-          .text(title, 100, 100, { align: 'center' });
+        //doc.fontSize(24)
+        //  .text(title, 100, 100, { align: 'center' });
 
         // Add an image, constrain it to a given size, and center it vertically and horizontally
-        doc.image(tmpQRFile, {
-          fit: [440, 350],
-          align: 'center',
-          valign: 'center'
-        });
+        //doc.image(tmpQRFile, {
+        //  fit: [440, 350],
+        //  align: 'center',
+        //  valign: 'center'
+        //});
       }
 
       let deletePromises = tmp_files.map(x => deleteFile(x.tmpFile));
