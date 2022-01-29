@@ -61,8 +61,8 @@ module.exports = function PDFGenerator() {
 
         doc.image(backgroundTemplateDirectory, {fit: [800, 650], align: 'left', valign: 'top'} );
         // Embed a font, set the font size, and render some text
-        //doc.fontSize(24)
-        //  .text(title, 100, 100, { align: 'center' });
+        doc.fontSize(64)
+          .text(title, 80, 250, { width: 500, height: 600 });
 
         // Add an image, constrain it to a given size, and center it vertically and horizontally
         //doc.image(tmpQRFile, {
