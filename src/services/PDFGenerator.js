@@ -13,6 +13,7 @@ module.exports = function PDFGenerator() {
   const existsPromise = util.promisify(fs.exists);
   const mkdirPromise = util.promisify(fs.mkdir);
   const rmdirPromise = util.promisify(fs.rmdir);
+  const linesSize = 12;
 
   const generateQRCode = async (filepath, code) => {
     return new Promise(async (res, rej) => {
@@ -61,15 +62,16 @@ module.exports = function PDFGenerator() {
 
         doc.image(backgroundTemplateDirectory, {fit: [800, 650], align: 'left', valign: 'top'} );
         // Embed a font, set the font size, and render some text
-        doc.fontSize(64)
-          .text(title, 80, 250, { width: 500, height: 600 });
+        doc.fontSize(getTitleFontSize(title.length))
+          .fillColor('white')
+          .text(title, 50, getTitlePosition(title.length), { width: 450, height: 600 });
 
         // Add an image, constrain it to a given size, and center it vertically and horizontally
-        //doc.image(tmpQRFile, {
-        //  fit: [440, 350],
-        //  align: 'center',
-        //  valign: 'center'
-        //});
+        doc.image(tmpQRFile, 500, 225, {
+          fit: [300, 300],
+          align: 'center',
+          valign: 'center'
+        });
       }
 
       let deletePromises = tmp_files.map(x => deleteFile(x.tmpFile));
@@ -77,6 +79,26 @@ module.exports = function PDFGenerator() {
       await rmdirPromise(tmpQRDirectory);
       return doc.end();
   };
+
+  const getTitleFontSize = (length) => {
+    if (length >= linesSize * 2) {
+      return 54;
+    }
+    return 74;
+  }
+
+  const getTitlePosition = (length) => {
+    if (length <= linesSize * 1) {
+      return 330;
+    }
+    if (length <= linesSize * 2) {
+      return 290;
+    }
+    if (length <= linesSize * 3) {
+      return 220;
+    }
+    return 270;
+  }
 
   return {
     generateQRCode,
