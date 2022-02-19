@@ -191,6 +191,7 @@ describe('App test', () => {
 
     describe('get PDF file', () => {
       test('should get a PDF document from establishment in the response', async () => {
+        jest.setTimeout(30000);
         await request(server).get(`/establishments/PDF/${establishment_id1}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.header['content-type']).toBe('application/pdf');
@@ -199,6 +200,7 @@ describe('App test', () => {
       });
 
       test('should get a PDF document from space in the response', async () => {
+        jest.setTimeout(30000);
         await request(server).get(`/establishments/PDF/${establishment_id1}/space/${spaces1_ids[0]}`).then(res => {
           expect(res.status).toBe(200);
           expect(res.header['content-type']).toBe('application/pdf');
