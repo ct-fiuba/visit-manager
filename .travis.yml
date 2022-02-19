@@ -1,14 +1,14 @@
 language: node_js
 
 node_js:
-  - "node"
+  - lts/*
 
 services:
   - docker
 
 sudo: required
 
-install:
+install:nod
   - npm install
 
 before_script:
