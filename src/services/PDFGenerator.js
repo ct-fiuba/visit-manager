@@ -8,10 +8,12 @@ module.exports = function PDFGenerator() {
 
   const tmpQRDirectory = path.join(__dirname, "tmp");
   const logoDirectory = path.join(__dirname, '../../images/illness.png');
+  const backgroundTemplateDirectory = path.join(__dirname, '../../images/backgroundTemplate.png');
   const unlinkPromise = util.promisify(fs.unlink);
   const existsPromise = util.promisify(fs.exists);
   const mkdirPromise = util.promisify(fs.mkdir);
   const rmdirPromise = util.promisify(fs.rmdir);
+  const linesSize = 12;
 
   const generateQRCode = async (filepath, code) => {
     return new Promise(async (res, rej) => {
@@ -47,7 +49,7 @@ module.exports = function PDFGenerator() {
         await mkdirPromise(tmpQRDirectory);
       }
       // Create a document
-      const doc = new PDFDocument({ autoFirstPage: false });
+      const doc = new PDFDocument({ autoFirstPage: false, layout : 'landscape' });
 
       doc.pipe(res);
 
@@ -56,14 +58,17 @@ module.exports = function PDFGenerator() {
       for (const x of tmp_files) {
         let tmpQRFile = x.tmpFile;
         let title = x.title;
-        doc.addPage();
+        doc.addPage({ margin: 20, layout: 'landscape', size: 'A4' });
+
+        doc.image(backgroundTemplateDirectory, {fit: [800, 650], align: 'left', valign: 'top'} );
         // Embed a font, set the font size, and render some text
-        doc.fontSize(24)
-          .text(title, 100, 100, { align: 'center' });
+        doc.fontSize(getTitleFontSize(title.length))
+          .fillColor('white')
+          .text(title, 50, getTitlePosition(title.length), { width: 450, height: 600 });
 
         // Add an image, constrain it to a given size, and center it vertically and horizontally
-        doc.image(tmpQRFile, {
-          fit: [440, 350],
+        doc.image(tmpQRFile, 500, 225, {
+          fit: [300, 300],
           align: 'center',
           valign: 'center'
         });
@@ -74,6 +79,26 @@ module.exports = function PDFGenerator() {
       await rmdirPromise(tmpQRDirectory);
       return doc.end();
   };
+
+  const getTitleFontSize = (length) => {
+    if (length >= linesSize * 2) {
+      return 54;
+    }
+    return 74;
+  }
+
+  const getTitlePosition = (length) => {
+    if (length <= linesSize * 1) {
+      return 330;
+    }
+    if (length <= linesSize * 2) {
+      return 290;
+    }
+    if (length <= linesSize * 3) {
+      return 220;
+    }
+    return 270;
+  }
 
   return {
     generateQRCode,

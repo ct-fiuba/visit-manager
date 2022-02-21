@@ -88,26 +88,29 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
-      PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, false, current_space.estimatedVisitDuration));
-      if (current_space.hasExit) {
-        PDFInfo.push(getQRInfo(establishment.name, current_space.name, space_id, true, current_space.estimatedVisitDuration));
-      }
+      PDFInfo.concat(generatePDFInfoForSingleSpace(establishment.name, current_space));
     }
     let PDFData = { filename: `CT_QR_${establishment.name}.pdf`, PDFInfo };
     return PDFData;
   };
 
   const getPDFDataForSingleSpace = async (establishment_name, space_id) => {
-    let PDFInfo = [];
     let current_space = await SpaceHandler().findSpace(space_id);
-    PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, false, current_space.estimatedVisitDuration));
-    if (current_space.hasExit) {
-      PDFInfo.push(getQRInfo(establishment_name, current_space.name, space_id, true, current_space.estimatedVisitDuration));
-    }
+    let PDFInfo = generatePDFInfoForSingleSpace(establishment_name, current_space);
     let PDFData = { filename: `CT_QR_${establishment_name}_${current_space.name}.pdf`, PDFInfo };
     return PDFData;
   };
 
+  const generatePDFInfoForSingleSpace = (establishment_name, space) => {
+    let PDFInfo = [];
+    if (space.hasExit) {
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, true, false, space.estimatedVisitDuration));
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, true, true, space.estimatedVisitDuration));
+    } else {
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, false, false, space.estimatedVisitDuration));
+    }
+    return PDFInfo;
+  };
 
   return {
     findEstablishments,
