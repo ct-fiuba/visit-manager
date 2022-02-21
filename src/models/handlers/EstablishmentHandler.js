@@ -104,10 +104,10 @@ module.exports = function EstablishmentHandler() {
   const generatePDFInfoForSingleSpace = (establishment_name, space) => {
     let PDFInfo = [];
     if (space.hasExit) {
-      PDFInfo.push(getQRInfo(establishment_name, space.name, space_id, true, false, space.estimatedVisitDuration));
-      PDFInfo.push(getQRInfo(establishment_name, space.name, space_id, true, true, space.estimatedVisitDuration));
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, true, false, space.estimatedVisitDuration));
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, true, true, space.estimatedVisitDuration));
     } else {
-      PDFInfo.push(getQRInfo(establishment_name, space.name, space_id, false, false, space.estimatedVisitDuration));
+      PDFInfo.push(getQRInfo(establishment_name, space.name, space._id, false, false, space.estimatedVisitDuration));
     }
     return PDFInfo;
   };
