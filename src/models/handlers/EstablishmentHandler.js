@@ -101,7 +101,7 @@ module.exports = function EstablishmentHandler() {
     return PDFData;
   };
 
-  const generatePDFInfoForSingleSpace = (establishment_name, space) {
+  const generatePDFInfoForSingleSpace = (establishment_name, space) => {
     let PDFInfo = [];
     if (space.hasExit) {
       PDFInfo.push(getQRInfo(establishment_name, space.name, space_id, true, false, space.estimatedVisitDuration));
@@ -110,7 +110,7 @@ module.exports = function EstablishmentHandler() {
       PDFInfo.push(getQRInfo(establishment_name, space.name, space_id, false, false, space.estimatedVisitDuration));
     }
     return PDFInfo;
-  }
+  };
 
   return {
     findEstablishments,
