@@ -88,7 +88,7 @@ module.exports = function EstablishmentHandler() {
     let PDFInfo = [];
     for (const space_id of establishment.spaces) {
       let current_space = await SpaceHandler().findSpace(space_id);
-      PDFInfo.concat(generatePDFInfoForSingleSpace(establishment.name, current_space));
+      PDFInfo = PDFInfo.concat(generatePDFInfoForSingleSpace(establishment.name, current_space));
     }
     let PDFData = { filename: `CT_QR_${establishment.name}.pdf`, PDFInfo };
     return PDFData;
